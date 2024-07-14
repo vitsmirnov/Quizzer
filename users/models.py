@@ -10,17 +10,8 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
-class User: ...
-class Color: ...
-
-
-class User(AbstractUser):
-    balance = models.IntegerField(default=0)
-    color = models.ForeignKey(to=Color, on_delete=models.CASCADE, related_name='users')
-    # passed_tests_number
-
-    def __str__(self) -> str:
-        return super().__str__() + f"balbance: {self.balance}"
+# class User: ...
+# class Color: ...
 
 
 class Color(models.Model):
@@ -31,3 +22,13 @@ class Color(models.Model):
 
     # def __str__(self) -> str:
     #     return f""
+
+
+class User(AbstractUser):
+    balance = models.IntegerField(default=0)
+    color = models.ForeignKey(to=Color, on_delete=models.CASCADE,
+                              related_name='users', null=True, blank=True)
+    # passed_tests_number
+
+    def __str__(self) -> str:
+        return super().__str__() + f"balbance: {self.balance}"

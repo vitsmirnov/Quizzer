@@ -1,0 +1,26 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <!-- <link href="{% static "css/base.css" %}" rel="stylesheet"> -->
+</head>
+<body>
+    <div id="header">
+        <span class="logo">Tester</span>
+
+        {% if not request.user.is_authenticated %}
+            <span><a href="{% url 'users:login' %}">Login</a></span>
+            <span><a href="#">Register</a></span>
+        {% else %}
+            <span><a href="{% url 'users:logout' %}">Logout</a></span>
+        {% endif %}
+    </div>
+
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>
