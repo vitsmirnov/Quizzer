@@ -1,0 +1,78 @@
+[user]
+
+User
+  username
+  password
+  // ..email
+
+  balance (currency)
+  color (fk Color)
+  //colors ?
+  --?
+  passed_test_number
+  statistics
+
+
+Color
+  name
+  value
+  price
+
+
+UserColors
+  user (fk User)
+  color (fk Color)
+
+
+
+[test]
+
+
+Test
+  title (caption/name)
+  description
+  --?
+  created
+  category
+  price ??
+
+
+//TestCategory
+
+
+Question
+  text
+  test (fk Test)
+  right_answer (fk Answer) ?
+  price ??
+
+
+Answer
+  text
+  question (fk Question)
+  //price (bonus)
+
+
+Statistics (Log)
+  user (fk User)
+  test (fk Test)
+  date ?
+
+
+UserAnswers
+  User
+  Test
+  --?
+  Question
+  Answer
+
+
+
+[pages]
+  main
+  login
+  logout
+  register
+  profile
+  test
+  

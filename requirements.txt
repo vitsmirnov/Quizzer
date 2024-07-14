@@ -1,0 +1,5 @@
+# Python==3.12.0
+
+Django==4.*
+
+# Pillow
