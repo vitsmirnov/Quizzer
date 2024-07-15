@@ -10,11 +10,12 @@
     <div id="header">
         <span class="logo">Tester</span>
 
-        {% if not request.user.is_authenticated %}
-            <span><a href="{% url 'users:login' %}">Login</a></span>
-            <span><a href="#">Register</a></span>
-        {% else %}
+        {% if request.user.is_authenticated %}
+            <span><a href="#">{{ request.user.username }}</a></span>
             <span><a href="{% url 'users:logout' %}">Logout</a></span>
+        {% else %}
+            <span><a href="{% url 'users:register' %}">Register</a></span>
+            <span><a href="{% url 'users:login' %}">Login</a></span>
         {% endif %}
     </div>
 
