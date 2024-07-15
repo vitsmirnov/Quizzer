@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from ..quizzes.models import Quiz
+from quizzes.models import Quiz
 
 # from colorfield.fields import ColorField
 
