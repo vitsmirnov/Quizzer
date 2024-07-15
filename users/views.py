@@ -7,6 +7,9 @@ from django.urls import reverse_lazy
 from .forms import CreationForm
 from .models import Color
 
+
+user = get_user_model()
+
 # Create your views here.
 
 class RegisterView(CreateView):
@@ -34,7 +37,14 @@ class ColorListView(ListView):
 
 
 def change_color(request):
-    print('CHANGE_COLOR')
+    # print('CHANGE_COLOR')
     if request.method == 'POST':
-        print(request.POST)
-    return redirect('users:profile')
+        # print(request.POST['choice'])
+        # request
+        # print(request.user)
+        # print(request.user.colors.get(pk=request.POST['choice']))
+        request.user.color = request.user.colors.get(pk=request.POST['choice'])
+        request.user.save()
+        # print(request.user, '\n', user)
+
+    return redirect('users:profile2')

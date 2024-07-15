@@ -18,4 +18,6 @@
     {% else %}
         There are no colors yet.
     {% endif %}
+    
+    <a href="{% url 'users:profile' request.user.pk  %}">Go to profile</a>
 {% endblock %}

@@ -12,18 +12,32 @@
 
         <!-- <p>Color: <a href="#">{{ request.user.color }}</a></p> -->
 
+
+        <!-- <p>
+            <form action="{% url 'quizzes:index' %}" method="get">
+                <select type="submit" onchange="this.form.submit()">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </form>
+        </p> -->
+
         <p>
             <!-- Color: -->
             {% if object.colors.all %}
                 <form action="{% url 'users:change_color' %}" method="post">
+                    {% csrf_token %}
                     Color: 
-                    <select type="submit">
+                    <select type="submit" onchange="this.form.submit()" name="choice">
                         {% for color in object.colors.all %}
                             <option value="{{ color.value }}" 
-                                {% if object.color.pk == color.pk %}selected{% endif %}>{{ color.name }}
+                                {% if object.color.pk == color.pk %}selected{% endif %}>
+                                {{ color.name }}
                             </option>
                         {% endfor %}
                     </select>
+                    <!-- <input type="submit" value="Change color"> -->
                 </form>
             {% else %}
                 Color: 
