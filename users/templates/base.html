@@ -10,6 +10,9 @@
     <div id="header">
         <span class="logo">Tester</span>
 
+        <span>Tests</span>
+        <span>Users</span>
+
         {% if request.user.is_authenticated %}
             <span><a href="#">{{ request.user.username }}</a></span>
             <span><a href="{% url 'users:logout' %}">Logout</a></span>

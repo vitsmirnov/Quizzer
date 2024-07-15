@@ -17,7 +17,7 @@ from django.contrib.auth.models import AbstractUser
 class Color(models.Model):
     name = models.CharField(verbose_name='Color name', default='', unique=True,
                             max_length=32)
-    value = models.IntegerField(default=0, unique=True)
+    value = models.IntegerField(default=0, unique=True) # str?
     price = models.IntegerField(default=0)
 
     # def __str__(self) -> str:
@@ -28,7 +28,7 @@ class User(AbstractUser):
     balance = models.IntegerField(default=0)
     color = models.ForeignKey(to=Color, on_delete=models.CASCADE,
                               related_name='users', null=True, blank=True)
-    # passed_tests_number
+    passed_tests_number = models.IntegerField(default=0)
 
     def __str__(self) -> str:
-        return super().__str__() + f"balbance: {self.balance}"
+        return super().__str__() + f" balance: {self.balance}"

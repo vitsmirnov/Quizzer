@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}{{ request.user.username }} profile{% endblock %}
+
+{% block content %}
+    <h1>Hello, {{ request.user.username }}</h1>
+    
+    <p>Passed tests: {{ request.user.passed_tests_number }}</p>
+    <p>Balance: {{ request.user.balance }}</p>
+    <p>Color: <a href="#">{{ request.user.color }}</a></p>
+    <p><a href="#">Buy colors</a></p>
+    <p><a href="#">Change password</a></p>
+    <p><a href="{% url 'users:logout' %}">Logout</a></p>
+
+{% endblock %}
