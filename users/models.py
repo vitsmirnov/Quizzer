@@ -20,8 +20,8 @@ class Color(models.Model):
     value = models.IntegerField(default=0, unique=True) # str?
     price = models.IntegerField(default=0)
 
-    # def __str__(self) -> str:
-    #     return f""
+    def __str__(self) -> str:
+        return f"Color: {self.name} ({self.value}), price: {self.price}"
 
 
 class User(AbstractUser):
@@ -29,6 +29,8 @@ class User(AbstractUser):
     color = models.ForeignKey(to=Color, on_delete=models.CASCADE,
                               related_name='users', null=True, blank=True)
     passed_tests_number = models.IntegerField(default=0)
+
+    colors = models.ManyToManyField(Color)
 
     def __str__(self) -> str:
         return super().__str__() + f" balance: {self.balance}"

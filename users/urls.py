@@ -2,7 +2,8 @@ from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 
 from .forms import CreationForm
-from .views import RegisterView, ProfileView, profile2
+from .views import RegisterView, ProfileView, profile2, ColorListView, \
+    change_color
 
 app_name = 'users'
 
@@ -16,4 +17,7 @@ urlpatterns = [
 
     path('profile/', profile2, name='profile2'),
     path('profile/<int:pk>', ProfileView.as_view(), name='profile'),
+
+    path('colors/', ColorListView.as_view(), name='colors'),
+    path('change_color/', change_color, name='change_color'),
 ]

@@ -7,9 +7,40 @@
     
     <p>Passed tests: {{ request.user.passed_tests_number }}</p>
     <p>Balance: {{ request.user.balance }}</p>
-    <p>Color: <a href="#">{{ request.user.color }}</a></p>
-    <p><a href="#">Buy colors</a></p>
-    <p><a href="#">Change password</a></p>
+
+    <!-- <form method="post"> -->
+
+        <!-- <p>Color: <a href="#">{{ request.user.color }}</a></p> -->
+
+        <p>
+            <!-- Color: -->
+            {% if object.colors.all %}
+                <form action="{% url 'users:change_color' %}" method="post">
+                    Color: 
+                    <select type="submit">
+                        {% for color in object.colors.all %}
+                            <option value="{{ color.value }}" 
+                                {% if object.color.pk == color.pk %}selected{% endif %}>{{ color.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            {% else %}
+                Color: 
+                <select>
+                    <option value="0">no colors</option>
+                </select>
+            {% endif %}
+            
+        </p>
+
+        
+        <!-- <input type="submit" value="Отправить" /> -->
+
+    <!-- </form> -->
+
+    <p><a href="{% url 'users:colors' %}">Buy colors</a></p>
+    <p><a href="">Change password</a></p>
     <p><a href="{% url 'users:logout' %}">Logout</a></p>
 
 {% endblock %}

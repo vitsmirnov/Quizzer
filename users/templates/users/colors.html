@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Colors{% endblock %}
+
+{% block content %}
+    <h1>Colors</h1>
+    <p>
+        Yotur balance: {{ request.user.balance }}
+    </p>
+    {% if object_list %}
+        {% for color in object_list %}
+            <ul>
+                <li>
+                    Color: {{ color.name }} ({{ color.value }}), price: {{ color.price }}
+                </li>
+            </ul>
+        {% endfor %}
+    {% else %}
+        There are no colors yet.
+    {% endif %}
+{% endblock %}
