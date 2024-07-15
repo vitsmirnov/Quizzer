@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from quizzes.models import Quiz
+from quizzes.models import Quiz, Answer
 
 # from colorfield.fields import ColorField
 
@@ -34,6 +34,8 @@ class User(AbstractUser):
 
     colors = models.ManyToManyField(Color)
     passed_tests = models.ManyToManyField(Quiz)
+
+    # answers = models.ManyToManyField(Answer)
 
     def __str__(self) -> str:
         return super().__str__() + f" balance: {self.balance}"

@@ -1,5 +1,7 @@
 from django.db import models
-
+from django.contrib.auth import get_user_model
+from django.conf import settings
+# from settings import AUTH_USER_MODEL
 
 # Models list:
 # class Quiz(models.Model): ...
@@ -17,6 +19,7 @@ class Quiz(models.Model):
 
 class Question(models.Model):
     text = models.CharField(max_length=512)
+    # rename to quiz??!
     test = models.ForeignKey(to=Quiz, on_delete=models.CASCADE,
                              related_name='questions')
     # right_answer = models.ForeignKey(to=Answer, on_delete=models.CASCADE,
@@ -34,7 +37,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
     text = models.CharField(max_length=512)
-    question = models.ForeignKey(to='Question', on_delete=models.CASCADE,
+    question = models.ForeignKey(to=Question, on_delete=models.CASCADE,
                                  related_name='answers')
     
     def __str__(self) -> str:
@@ -57,3 +60,23 @@ class QuestionAnswer(models.Model):
     
     def __str__(self) -> str:
         return f'For question "{self.question}" right answer is "{self.answer}"'
+
+
+class UserAnswer(models.Model):
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                             related_name='answers') # OneToOneField()
+    answer = models.ForeignKey(to=Answer, on_delete=models.CASCADE,
+                               related_name='users') # delete related_name
+    
+    # quiz = models.ForeignKey(to=Quiz, on_delete=models.CASCADE)
+
+    # class Meta:
+    #     constraints = (
+    #         models.UniqueConstraint(
+    #             fields=('question', 'answer'),
+    #             name='right_answers'
+    #         ),
+    #     )
+    
+    # def __str__(self) -> str:
+    #     return f'For question "{self.question}" right answer is "{self.answer}"'
