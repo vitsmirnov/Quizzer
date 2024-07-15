@@ -10,7 +10,6 @@ def index(request):
     return render(request, 'quizzes/index.html')
 
 
-class QuizzesView(ListView):
+class QuizListView(ListView):
     model = Quiz
-    template_name = 'quizzes/quizzess.html'
-
+    template_name = 'quizzes/quiz_list.html'

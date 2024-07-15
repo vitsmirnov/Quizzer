@@ -1,9 +1,10 @@
 from django.contrib import admin
 
-from .models import Quiz, Question, Answer
+from .models import Quiz, Question, Answer, QuestionAnswer
 
 # Register your models here.
 
-admin.register(Quiz)
-admin.register(Question)
-admin.register(Answer)
+admin.site.register(Quiz)
+admin.site.register(Question)
+admin.site.register(Answer)
+admin.site.register(QuestionAnswer)

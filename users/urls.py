@@ -12,7 +12,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='users/login.html',
         next_page='users:profile2'), name='login'), #redirect_field_name # go to profile!
     path('logout/', LogoutView.as_view(template_name='users/logout.html',
-        next_page='quizzes:index'), name='logout'),
+        next_page='quizzes:quiz_list'), name='logout'),
     path('register/', RegisterView.as_view(), name='register'),
 
     path('profile/', profile2, name='profile2'),
