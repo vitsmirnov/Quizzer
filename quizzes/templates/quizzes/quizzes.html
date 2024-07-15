@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Tester{% endblock %}
+
+{% block content %}
+    <h1>Quizzes</h1>
+    {% for quiz in object_list %}
+        <div>
+            {{ quiz.name }}
+        </div>
+    {% empty %}
+        There are no quizzes yet..
+    {% endfor %}
+{% endblock %}
