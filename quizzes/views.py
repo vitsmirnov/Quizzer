@@ -12,5 +12,5 @@ def index(request):
 
 class QuizzesView(ListView):
     model = Quiz
-    template_name = 'quizzes/quizzes.html'
+    template_name = 'quizzes/quizzess.html'
 
