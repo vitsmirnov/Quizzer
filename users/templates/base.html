@@ -8,13 +8,13 @@
 </head>
 <body>
     <div id="header">
-        <span class="logo">Tester</span>
+        <span class="logo"><a href="{% url 'quizzes:index' %}">Tester</a></span>
 
-        <span>Tests</span>
+        <!-- <span>Tests</span> -->
         <span>Users</span>
 
         {% if request.user.is_authenticated %}
-            <span><a href="#">{{ request.user.username }}</a></span>
+            <span><a href="{% url 'users:profile' request.user.id %}">{{ request.user.username }}</a></span>
             <span><a href="{% url 'users:logout' %}">Logout</a></span>
         {% else %}
             <span><a href="{% url 'users:register' %}">Register</a></span>

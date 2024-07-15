@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import CreateView, DetailView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
@@ -16,6 +16,8 @@ class RegisterView(CreateView):
 
 class ProfileView(LoginRequiredMixin, DetailView):
     model = get_user_model()
-    template = 'users/profile.html'
+    template_name = 'users/profile.html'
 
     
+def profile2(request):
+    return redirect('users:profile', pk=request.user.id)
