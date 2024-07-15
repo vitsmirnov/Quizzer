@@ -4,10 +4,13 @@
 
 {% block content %}
     <h1>Quizzes</h1>
+    <hr>
     {% for quiz in object_list %}
         <div>
-            {{ quiz.title }}
+            <a href="{% url 'quizzes:quiz' quiz.pk %}">{{ quiz.title }}</a>
+            <p> {{ quiz.description }} </p>
         </div>
+        <hr>
     {% empty %}
         There are no quizzes yet..
     {% endfor %}
