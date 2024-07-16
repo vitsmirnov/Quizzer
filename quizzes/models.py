@@ -43,7 +43,7 @@ class Answer(models.Model):
         return f'Answer: "{self.text}" (to question: {self.question})'
     
 
-class RightAnswer(models.Model):
+class RightAnswer(models.Model):  # CorrectAnswer
     """ Right answers for each question """
     question = models.OneToOneField(to=Question, on_delete=models.CASCADE,
                                     related_name='right_answer')
@@ -54,7 +54,7 @@ class RightAnswer(models.Model):
         constraints = (
             models.UniqueConstraint(
                 fields=('question', 'answer'),
-                name='right_answers'
+                name='right_answers'  # ?
             ),
         )
     

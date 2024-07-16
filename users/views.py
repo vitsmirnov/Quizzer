@@ -48,3 +48,14 @@ def change_color(request):
         # print(request.user, '\n', user)
 
     return redirect('users:profile2')
+
+
+class UserListView(ListView):
+    model = user
+    template_name = 'users/user_list.html'
+
+    # def get_context_data(self, **kwargs: reverse_lazy) -> dict[str, Any]:
+    #     # return super().get_context_data(**kwargs)
+    #     context = super().get_context_data(**kwargs)
+    #     # self.object_list.
+    #     return context

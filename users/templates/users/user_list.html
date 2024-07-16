@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+    <h1>User</h1>
+    <p>
+        Number of users: {{ object_list|length }}
+    </p>
+    {% if object_list %}
+        {% for user in object_list %}
+            <ul>
+                <li>
+                    User: {{ user.username }} ({{ user.color.name }}), balance: {{ user.balance }}
+                </li>
+            </ul>
+        {% endfor %}
+    {% else %}
+        There are no users yet.
+    {% endif %}
+    
+    <a href="{% url 'quizzes:quiz_list' %}">Go to quizzes</a>
+{% endblock %}

@@ -11,7 +11,7 @@
         <span class="logo"><a href="{% url 'quizzes:quiz_list' %}">Tester</a></span>
 
         <!-- <span>Tests</span> -->
-        <span>Users</span>
+        <span><a href="{% url 'users:user_list' %}">Users</a></span>
 
         {% if request.user.is_authenticated %}
             <span><a href="{% url 'users:profile' request.user.id %}">{{ request.user.username }}</a></span>
