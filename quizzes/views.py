@@ -17,16 +17,46 @@ class QuizListView(ListView):
     template_name = 'quizzes/quiz_list.html'
 
 
-class QuizView(DetailView, LoginRequiredMixin):#ListView):
+class QuizView(LoginRequiredMixin, DetailView):#ListView):
     model = Quiz  #Question
     template_name = 'quizzes/quiz.html'
     # context_object_name = 'questions'
 
+    login_url = 'users:login'
+
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        return super().get(request, *args, **kwargs)
+        # return super().get(request, *args, **kwargs)
+        rensponse = super().get(request, *args, **kwargs)
+        print('QuizView.get()')
+
+        user = request.user
+        print(user)
+        print(f'pk = {kwargs['pk']}')
+        # user.is_quiz_passed(self.model.objects.get(pk=int(kwargs['pk'])))
+        if user.is_quiz_passed(int(kwargs['pk'])):
+            return render(request, 'quizzes/result.html', {
+                'quiz_id': 404,
+                'user_id': 404,
+            })
+
+        return rensponse
     
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        return super().get(request, *args, **kwargs)
+        # return super().get(request, *args, **kwargs)
+        # rensponse = super().post(request, *args, **kwargs)
+
+        print('QuizView.post()')
+        # print(f'submit_quiz({quiz_id}, {user_id})')
+        # print(request.POST)
+        # return render(request, 'quizzes/passed_quiz.html', {
+        #     'quiz_id': quiz_id, 'user_id': user_id,
+        # })
+        print(request.POST)
+    
+        return render(request, 'quizzes/result.html', {
+            'quiz_id': 404,
+            'user_id': 404,
+        }) #context
 
     # def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         # return super().get_context_data(**kwargs)

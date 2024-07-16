@@ -7,8 +7,8 @@
 
     
     {% if request.user.is_authenticated %}
-        <!-- <form method="post" action=""> -->
-        <form action="{% url 'quizzes:submit_quiz' object.pk request.user.pk %}" method="post">
+        <!-- <form action="{ url 'quizzes:submit_quiz' object.pk request.user.pk }" method="post"> -->
+        <form action="{% url 'quizzes:quiz' object.pk %}" method="post">
         {% csrf_token %}
     {% endif %}
         
@@ -21,9 +21,12 @@
                 
                     <div>
                     <!-- <p> -->
-                        <input type="radio" name="choice {{ question.id }}" id="choice {{ forloop.counter }}"
+                        <input 
+                            type="radio"
+                            name="question{{ question.id }}"
+                            id="question{{ forloop.counter }}"
                             value="{{ answer.id }}">
-                        <label for="choice{{ forloop.counter }}">{{ answer.text }}</label>
+                        <label for="question{{ forloop.counter }}">{{ answer.text }}</label>
                     <!-- </p> -->
                     </div>
                     <!-- <br> -->

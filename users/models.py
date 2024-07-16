@@ -34,7 +34,16 @@ class User(AbstractUser):
 
     colors = models.ManyToManyField(Color)
     answers = models.ManyToManyField(Answer)
-    # passed_tests = models.ManyToManyField(Quiz)  # ?!
+    # passed_quizzees = models.ManyToManyField(Quiz)  # ?!
 
     def __str__(self) -> str:
         return super().__str__() + f" balance: {self.balance}"
+    
+    def is_quiz_passed(self, quiz_id: int, quiz: Quiz=None) -> bool:  # quiz_id: int
+        print(quiz)
+        print(self.answers.all())
+        for answer in self.answers.all():
+            print(answer.question.quiz == quiz)
+            if answer.question.quiz == quiz:
+                return True
+        return False

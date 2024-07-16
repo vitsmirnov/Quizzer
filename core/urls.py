@@ -16,11 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.shortcuts import redirect
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     # path('quizzes/', include('quizzes.urls', namespace='quizzes')),
-    path('', include('quizzes.urls')),
+    path('', include('quizzes.urls')),#, name='main'),#quizzes/
+    # path('', redirect('main')),
 ]
