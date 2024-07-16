@@ -19,7 +19,8 @@ from quizzes.models import Quiz, Answer
 class Color(models.Model):
     name = models.CharField(verbose_name='Color name', default='', unique=True,
                             max_length=32)
-    value = models.IntegerField(default=0, unique=True) # str?
+    # value = models.IntegerField(default=0, unique=True) # str?
+    value = models.CharField(default='rgba(0,0,0,1)', max_length=64)  # unique=?
     price = models.IntegerField(default=0)
 
     def __str__(self) -> str:

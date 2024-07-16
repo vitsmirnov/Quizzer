@@ -48,7 +48,7 @@ class RightAnswer(models.Model):  # CorrectAnswer
     question = models.OneToOneField(to=Question, on_delete=models.CASCADE,
                                     related_name='right_answer')
     answer = models.ForeignKey(to=Answer, on_delete=models.CASCADE,
-                               related_name='questions')
+                               related_name='questions')  # remove related_name?
     
     class Meta:
         constraints = (

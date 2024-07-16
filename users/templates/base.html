@@ -14,7 +14,11 @@
         <span><a href="{% url 'users:user_list' %}">Users</a></span>
 
         {% if request.user.is_authenticated %}
-            <span><a href="{% url 'users:profile' request.user.id %}">{{ request.user.username }}</a></span>
+            <span><a
+                href="{% url 'users:profile' request.user.id %}"                
+                style="background-color:{{ request.user.color.value }};">
+                {{ request.user.username }}
+            </a></span>
             <span><a href="{% url 'users:logout' %}">Logout</a></span>
         {% else %}
             <span><a href="{% url 'users:register' %}">Register</a></span>
