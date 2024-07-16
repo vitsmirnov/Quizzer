@@ -3,11 +3,14 @@
 User
   username
   password
-  // ..email
+  // email, ..
 
   balance (currency)
   color (fk Color)
-  //colors ?
+
+  colors (ManyToMany)
+  answers (ManyToMany)
+  // passed_quizzes (ManyToMany) ?
   --?
   passed_test_number
   statistics
@@ -19,7 +22,8 @@ Color
   price
 
 
-UserColors
+// ?
+UserColors (ManyToMany)
   user (fk User)
   color (fk Color)
 
@@ -28,9 +32,13 @@ UserColors
 [test]
 
 
-Test
+Quiz (Test)
   title (caption/name)
   description
+
+  // related_name
+  questions (to Question)
+
   --?
   created
   category
@@ -38,13 +46,17 @@ Test
 
 
 //TestCategory
+  name
 
 
 Question
   text
-  test (fk Test)
-  right_answer (fk Answer) ?
-  price ??
+  quiz/test (fk Quiz/Test)
+  price // ?
+  // right_answer (fk Answer) // It won't work?
+
+  // related_name
+  answers (to Answer)
 
 
 Answer
@@ -53,10 +65,9 @@ Answer
   //price (bonus)
 
 
-Statistics (Log)
-  user (fk User)
-  test (fk Test)
-  date ?
+RightAnswers // QuestionAnswer?
+  question (OneToOne Question)
+  answer (fk Answer)
 
 
 UserAnswers
@@ -65,6 +76,14 @@ UserAnswers
   //Question ?
   //Test ?
   --?
+
+
+// ?
+Statistics (Log)
+  user (fk User)
+  test (fk Test)
+  date ?
+
 
 
 
@@ -79,4 +98,5 @@ UserAnswers
  
 
 [urls]
-
+  // users/account
+  // quizzes

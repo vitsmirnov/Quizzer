@@ -33,9 +33,8 @@ class User(AbstractUser):
     passed_tests_number = models.IntegerField(default=0)
 
     colors = models.ManyToManyField(Color)
-    passed_tests = models.ManyToManyField(Quiz)
-
-    # answers = models.ManyToManyField(Answer)
+    answers = models.ManyToManyField(Answer)
+    # passed_tests = models.ManyToManyField(Quiz)  # ?!
 
     def __str__(self) -> str:
         return super().__str__() + f" balance: {self.balance}"
