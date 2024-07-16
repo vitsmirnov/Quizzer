@@ -42,3 +42,10 @@ class QuizView(DetailView):#ListView):
         # context['answers'] = None
 
         # return context
+
+
+def submit_quiz(request, quiz_id, user_id):
+    print(f'submit_quiz({quiz_id}, {user_id})')
+    return render(request, 'quizzes/passed_quiz.html', {
+        'quiz_id': quiz_id, 'user_id': user_id,
+    })

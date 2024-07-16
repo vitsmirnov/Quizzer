@@ -5,33 +5,41 @@
 {% block content %}
     <h1>Quiz {{ object.title }}</h1>
 
-    <form action="" method="post">
+    
+    {% if request.user.is_authenticated %}
+        <!-- <form method="post" action=""> -->
+        <form action="{% url 'quizzes:submit_quiz' object.pk request.user.pk %}" method="post">
+        {% csrf_token %}
+    {% endif %}
+        
+        {% for question in object.questions.all %}
+            <div>
+                {{ forloop.counter }}) 
+                {{ question.text }}
 
-    {% for question in object.questions.all %}
-        <div>
-            {{ forloop.counter }}) 
-            {{ question.text }}
+                {% for answer in question.answers.all %}
+                
+                    <p>
+                        <input type="radio" name="choice {{ question.id }}" id="choice {{ forloop.counter }}"
+                            value="{{ answer.id }}">
+                        <label for="choice{{ forloop.counter }}">{{ answer.text }}</label>
+                    </p>
 
-            {% for answer in question.answers.all %}
-            
-                <p>
-                    <input type="radio" name="choice {{ question.id }}" id="choice {{ forloop.counter }}"
-                        value="{{ answer.id }}">
-                    <label for="choice{{ forloop.counter }}">{{ answer.text }}</label>
-                </p>
+                {% empty %}
+                    There are no choises..
+                {% endfor %}
+            </div>
+            <hr>
+        {% empty %}
+            There are no quizzes yet..
+        {% endfor %}
 
-            {% empty %}
-                There are no choises..
-            {% endfor %}
-        </div>
-        <hr>
-    {% empty %}
-        There are no quizzes yet..
-    {% endfor %}
 
-    <button>Submit</button>
+    {% if request.user.is_authenticated %}
+        <button>Submit</button>
+        </form>
+    {% endif %}
 
-    </form>
 {% endblock %}
 
     

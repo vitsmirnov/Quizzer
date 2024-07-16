@@ -11,7 +11,10 @@ from django.contrib.auth.forms import UserCreationForm
 #     username = forms.CharField(max_langth=32, unique=True, null=False, blank=False)
 #     password = forms.CharField(widget=)
 
-class CreationForm(UserCreationForm):
-    class Meta:
-        model = get_user_model()
-        fields = ('username',)
+# class CreationForm(UserCreationForm):
+#     class Meta:
+#         model = get_user_model()
+#         fields = ('username',)
+
+class QuizForm(forms.ModelForm):
+    pass

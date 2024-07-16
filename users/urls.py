@@ -16,7 +16,7 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     # path('change_password/'),
 
-    path('users/', UserListView.as_view(), name='user_list'),
+    path('', UserListView.as_view(), name='user_list'),  # 'users/' or 'list/' ??
 
     path('profile/', profile2, name='profile2'),
     path('profile/<int:pk>', ProfileView.as_view(), name='profile'),
