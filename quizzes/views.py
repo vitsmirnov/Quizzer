@@ -31,11 +31,11 @@ class QuizView(LoginRequiredMixin, DetailView):#ListView):
 
         user = request.user
         quiz_id = int(kwargs['pk'])
-        print(user)
+        # print(user)
         # print(user.answers.all())
-        print(f'pk = {kwargs['pk']}')
+        # print(f'pk = {kwargs['pk']}')
         # user.is_quiz_passed(self.model.objects.get(pk=int(kwargs['pk'])))
-        if user.is_quiz_passed(int(kwargs['pk'])):
+        if user.is_quiz_passed(quiz_id):
             return render(request, 'quizzes/result.html', {
                 'answers': user.quiz_answers(quiz_id)
             })
@@ -53,9 +53,9 @@ class QuizView(LoginRequiredMixin, DetailView):#ListView):
         # return render(request, 'quizzes/passed_quiz.html', {
         #     'quiz_id': quiz_id, 'user_id': user_id,
         # })
-        print(request.POST)
+        # print(request.POST)
         answers = request.POST.copy()
-        answers.pop('csrfmiddlewaretoken')
+        answers.pop('csrfmiddlewaretoken')  # It's doubtful
         for k, v in answers.items():
             user.answers.add(Answer.objects.get(pk=int(v)))
         user.save()
