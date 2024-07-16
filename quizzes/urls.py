@@ -8,5 +8,5 @@ urlpatterns = [
     # path('', index, name='index'),
     path('', QuizListView.as_view(), name='quiz_list'),#name='index'),
     path('quiz/<int:pk>/', QuizView.as_view(), name='quiz'),
-    path('quiz/<int:quiz_id>/<int:user_id>/', submit_quiz, name='submit_quiz'),
+    path('submit_quiz/<int:quiz_id>/<int:user_id>/', submit_quiz, name='submit_quiz'),
 ]

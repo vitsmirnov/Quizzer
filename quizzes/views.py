@@ -1,7 +1,8 @@
 from typing import Any
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.views.generic import ListView, DetailView
+from django.shortcuts import render, redirect
+from django.http import HttpRequest, HttpResponse
+from django.views.generic import ListView, DetailView, View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Quiz, Question, Answer
 
@@ -16,10 +17,16 @@ class QuizListView(ListView):
     template_name = 'quizzes/quiz_list.html'
 
 
-class QuizView(DetailView):#ListView):
+class QuizView(DetailView, LoginRequiredMixin):#ListView):
     model = Quiz  #Question
     template_name = 'quizzes/quiz.html'
     # context_object_name = 'questions'
+
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        return super().get(request, *args, **kwargs)
+    
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        return super().get(request, *args, **kwargs)
 
     # def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         # return super().get_context_data(**kwargs)
@@ -45,7 +52,14 @@ class QuizView(DetailView):#ListView):
 
 
 def submit_quiz(request, quiz_id, user_id):
-    print(f'submit_quiz({quiz_id}, {user_id})')
-    return render(request, 'quizzes/passed_quiz.html', {
-        'quiz_id': quiz_id, 'user_id': user_id,
-    })
+    if request.method == 'POST':
+        print(f'submit_quiz({quiz_id}, {user_id})')
+
+        print(request.POST)
+
+        return render(request, 'quizzes/passed_quiz.html', {
+            'quiz_id': quiz_id, 'user_id': user_id,
+        })
+    return redirect('users:login')
+
+# class Submit

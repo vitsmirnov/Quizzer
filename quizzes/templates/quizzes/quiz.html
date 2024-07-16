@@ -13,30 +13,35 @@
     {% endif %}
         
         {% for question in object.questions.all %}
-            <div>
-                {{ forloop.counter }}) 
-                {{ question.text }}
+            <!-- <div> -->
+            <fieldset>
+                <legend><strong>{{ forloop.counter }}) {{ question.text }}</strong></legend>
 
                 {% for answer in question.answers.all %}
                 
-                    <p>
+                    <div>
+                    <!-- <p> -->
                         <input type="radio" name="choice {{ question.id }}" id="choice {{ forloop.counter }}"
                             value="{{ answer.id }}">
                         <label for="choice{{ forloop.counter }}">{{ answer.text }}</label>
-                    </p>
+                    <!-- </p> -->
+                    </div>
+                    <!-- <br> -->
 
                 {% empty %}
                     There are no choises..
                 {% endfor %}
-            </div>
-            <hr>
+            </fieldset>
+            <!-- </div> -->
+            <!-- <hr> -->
         {% empty %}
             There are no quizzes yet..
         {% endfor %}
 
 
     {% if request.user.is_authenticated %}
-        <button>Submit</button>
+        <!-- <button>Submit</button> -->
+        <input type="submit" value="Submit">
         </form>
     {% endif %}
 
