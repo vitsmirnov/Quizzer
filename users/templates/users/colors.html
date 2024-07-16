@@ -8,13 +8,30 @@
         Your balance: {{ request.user.balance }}
     </p>
     {% if object_list %}
-        {% for color in object_list %}
-            <ul>
-                <li>
-                    Color: {{ color.name }} ({{ color.value }}), price: {{ color.price }}
-                </li>
-            </ul>
-        {% endfor %}
+        <form method="post" action="">
+            {% csrf_token %}
+            <!-- <ul> -->
+            {% for color in object_list %}
+                <!-- <li> -->
+                <div>
+                    <input type="submit" name="color" value="buy">
+                    Color: 
+                    <span style="
+                        color: {{ color.value }};
+                        background-color: {{ color.value }};
+                        border-style: solid;
+                        border-color: black;
+                        border-width: 1px;"
+                    >
+                        color
+                    </span>
+                    {{ color.name }}, 
+                    price: {{ color.price }}
+                </div>
+                <!-- </li> -->
+            {% endfor %}
+            <!-- </ul> -->
+        </form>
     {% else %}
         There are no colors yet.
     {% endif %}

@@ -20,7 +20,7 @@ class Color(models.Model):
     name = models.CharField(verbose_name='Color name', default='', unique=True,
                             max_length=32)
     # value = models.IntegerField(default=0, unique=True) # str?
-    value = models.CharField(default='rgba(0,0,0,1)', max_length=64)  # unique=?
+    value = models.CharField(default='rgba(255,255,255,1)', max_length=64)  # unique=?
     price = models.IntegerField(default=0)
 
     def __str__(self) -> str:
@@ -30,7 +30,7 @@ class Color(models.Model):
 class User(AbstractUser):
     balance = models.IntegerField(default=0)
     color = models.ForeignKey(to=Color, on_delete=models.CASCADE,
-                              related_name='users', null=True, blank=True)
+        related_name='users', null=True, blank=True)  # default= ?
     passed_tests_number = models.IntegerField(default=0)
 
     colors = models.ManyToManyField(Color)

@@ -18,9 +18,13 @@
                 <form action="{% url 'users:change_color' %}" method="post">
                     {% csrf_token %}
                     Color: 
-                    <select type="submit" onchange="this.form.submit()" name="choice">
+                    <select type="submit" onchange="this.form.submit()" name="choice"
+                        style="background-color: {{ request.user.color.value }};"
+                    >
                         {% for color in object.colors.all %}
-                            <option value="{{ color.value }}" 
+                            <option
+                                value="{{ color.pk }}" 
+                                style="background-color: {{ color.value }};"
                                 {% if object.color.pk == color.pk %}selected{% endif %}>
                                 {{ color.name }}
                             </option>

@@ -16,7 +16,8 @@
         {% if request.user.is_authenticated %}
             <span><a
                 href="{% url 'users:profile' request.user.id %}"                
-                style="background-color:{{ request.user.color.value }};">
+                style="border-style: solid; border-color:{{ request.user.color.value }};"
+            >
                 {{ request.user.username }}
             </a></span>
             <span><a href="{% url 'users:logout' %}">Logout</a></span>
