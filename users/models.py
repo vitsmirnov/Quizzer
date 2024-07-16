@@ -42,8 +42,22 @@ class User(AbstractUser):
     def is_quiz_passed(self, quiz_id: int, quiz: Quiz=None) -> bool:  # quiz_id: int
         print(quiz)
         print(self.answers.all())
+        # return self.answers.get()
         for answer in self.answers.all():
             print(answer.question.quiz == quiz)
-            if answer.question.quiz == quiz:
+            # if answer.question.quiz == quiz:
+            if answer.question.quiz.id == quiz_id:
                 return True
         return False
+    
+    def quiz_answers(self, quiz_id: int) -> list:
+        result = list()
+        # result = self.answers.get()
+
+        for answer in self.answers.all():
+            # print(answer.question.quiz == quiz)
+            # if answer.question.quiz == quiz:
+            if answer.question.quiz.id == quiz_id:
+                result.append(answer)
+        
+        return result

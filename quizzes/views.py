@@ -30,13 +30,14 @@ class QuizView(LoginRequiredMixin, DetailView):#ListView):
         print('QuizView.get()')
 
         user = request.user
+        quiz_id = int(kwargs['pk'])
         print(user)
+        # print(user.answers.all())
         print(f'pk = {kwargs['pk']}')
         # user.is_quiz_passed(self.model.objects.get(pk=int(kwargs['pk'])))
         if user.is_quiz_passed(int(kwargs['pk'])):
             return render(request, 'quizzes/result.html', {
-                'quiz_id': 404,
-                'user_id': 404,
+                'answers': user.quiz_answers(quiz_id)
             })
 
         return rensponse
@@ -45,6 +46,7 @@ class QuizView(LoginRequiredMixin, DetailView):#ListView):
         # return super().get(request, *args, **kwargs)
         # rensponse = super().post(request, *args, **kwargs)
 
+        user = request.user
         print('QuizView.post()')
         # print(f'submit_quiz({quiz_id}, {user_id})')
         # print(request.POST)
@@ -52,10 +54,16 @@ class QuizView(LoginRequiredMixin, DetailView):#ListView):
         #     'quiz_id': quiz_id, 'user_id': user_id,
         # })
         print(request.POST)
+        answers = request.POST.copy()
+        answers.pop('csrfmiddlewaretoken')
+        for k, v in answers.items():
+            user.answers.add(Answer.objects.get(pk=int(v)))
+        user.save()
+        
+        quiz_id = int(kwargs['pk'])
     
         return render(request, 'quizzes/result.html', {
-            'quiz_id': 404,
-            'user_id': 404,
+            'answers': user.quiz_answers(quiz_id)
         }) #context
 
     # def get_context_data(self, **kwargs: Any) -> dict[str, Any]:

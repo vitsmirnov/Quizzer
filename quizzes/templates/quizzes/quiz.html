@@ -23,8 +23,8 @@
                     <!-- <p> -->
                         <input 
                             type="radio"
-                            name="question{{ question.id }}"
                             id="question{{ forloop.counter }}"
+                            name="{{ question.id }}"
                             value="{{ answer.id }}">
                         <label for="question{{ forloop.counter }}">{{ answer.text }}</label>
                     <!-- </p> -->

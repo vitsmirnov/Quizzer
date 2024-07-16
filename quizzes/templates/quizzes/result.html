@@ -3,8 +3,18 @@
 {% block title %}Tester{% endblock %}
 
 {% block content %}
-    <h1>You have already passed this quiz.</h1>
+    <h1>Quiz result:</h1>
     Your id: {{ user_id }}
     <br>
     Quiz id: {{ quiz_id }}
+
+    <hr>
+    <h2>Answers:</h2>
+    {% for answer in answers %}
+        <div>
+            {{ answer.text }}
+        </div>
+    {% empty %}
+        No answers yet..
+    {% endfor %}
 {% endblock %}
