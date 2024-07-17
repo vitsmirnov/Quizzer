@@ -23,34 +23,41 @@ class User(AbstractUser):
     balance = models.IntegerField(default=0)
     color = models.ForeignKey(to=Color, on_delete=models.CASCADE,
         related_name='users', null=True, blank=True)  # default= ?
-    passed_tests_number = models.IntegerField(default=0)
-
-    colors = models.ManyToManyField(Color)
-    answers = models.ManyToManyField(Answer)  # This is probably suboptimal
-    # passed_quizzees = models.ManyToManyField(Quiz)  # ?!
-
-    def __str__(self) -> str:
-        return super().__str__() + f" balance: {self.balance}"
     
-    def is_quiz_passed(self, quiz_id: int, quiz: Quiz=None) -> bool:  # quiz_id: int
-        # print(quiz)
-        # print(self.answers.all())
-        # return self.answers.get()
+    colors = models.ManyToManyField(Color)
+    # User's answers for quiz questions (statistics)
+    answers = models.ManyToManyField(Answer)
+    # Working with answers like that is probably not optimal
+    # and we should create a table for statistics or something like that:
+    # passed_quizzees = models.ManyToManyField(Quiz)  # ?!
+    # but maybe not..
+
+    def is_quiz_passed(self, quiz_id: int) -> bool:
         for answer in self.answers.all():
-            # print(answer.question.quiz == quiz)
-            # if answer.question.quiz == quiz:
             if answer.question.quiz.id == quiz_id:
                 return True
         return False
     
     def passed_quizzes(self) -> set[Quiz]:
-        res = set()
+        result = set()
         for answer in self.answers.all():
-            res.add(answer.question.quiz)
-        return res
+            result.add(answer.question.quiz)
+        return result
     
-    # temp
-    def print_passed_quizzes(self) -> None:
+    @property
+    def passed_quizzes_count(self) -> int:
+        return len(self.passed_quizzes())
+    
+    def quiz_answers(self, quiz_id: int) -> list[Answer]:
+        """ It returns the answers for particular quiz """
+        result = list()
+        for answer in self.answers.all():
+            if answer.question.quiz.id == quiz_id:
+                result.append(answer)
+        return result
+    
+    # temp (for degugging)
+    def _print_passed_quizzes(self) -> None:
         quizzes = self.passed_quizzes()
         for quiz in quizzes:
             print(quiz)
@@ -60,27 +67,5 @@ class User(AbstractUser):
                     print(f'\t\t{ answer }')
                 print(f'\t\t->\t{ question.right_answer }')
                 # user's answer
-                # print(f'\t\tuser\'s->\t{ self.answers.get(question__id=question.id) }')
-                # print(f'\t\tuser\'s->\t{ get_or_none(self.answers, question__id=question.id) }')
                 # There is no any difference between filter() and get in terms of query execution speed.
                 print(f'\t\tu ->\t{ self.answers.filter(question__id=question.id).first() }')
-    
-    def quiz_answers(self, quiz_id: int) -> list:
-        result = list()
-        # result = self.answers.get()
-
-        for answer in self.answers.all():
-            # print(answer.question.quiz == quiz)
-            # if answer.question.quiz == quiz:
-            if answer.question.quiz.id == quiz_id:
-                result.append(answer)
-        
-        return result
-
-
-# temp
-def get_or_none(query_set, **kwargs):
-    try:
-        return query_set.get(**kwargs)
-    except:  # ?.DoesNotExist:
-        return None
