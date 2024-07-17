@@ -44,15 +44,16 @@ class Answer(models.Model):
     
     @property
     def is_right(self) -> bool:  # rename to is_correct ?
-        return self.id == self.question.right_answer.id
+        # print(f'Answer.is_right: {self.id} <-> {self.question.right_answer.answer.id}')
+        return self.id == self.question.right_answer.answer.id
     
 
 class RightAnswer(models.Model):  # CorrectAnswer
     """ Right answers for each question """
     question = models.OneToOneField(to=Question, on_delete=models.CASCADE,
                                     related_name='right_answer')
-    answer = models.ForeignKey(to=Answer, on_delete=models.CASCADE,
-                               related_name='questions')  # remove related_name?
+    answer = models.ForeignKey(to=Answer, on_delete=models.CASCADE)#,
+                               #related_name='questions')  # remove related_name?
     
     class Meta:
         constraints = (

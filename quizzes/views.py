@@ -37,7 +37,8 @@ class QuizView(LoginRequiredMixin, DetailView):#ListView):
         # user.is_quiz_passed(self.model.objects.get(pk=int(kwargs['pk'])))
         if user.is_quiz_passed(quiz_id):
             return render(request, 'quizzes/result.html', {
-                'answers': user.quiz_answers(quiz_id)
+                'answers': user.quiz_answers(quiz_id),
+                'quiz': Quiz.objects.filter(pk=quiz_id).first(),
             })
 
         return rensponse
@@ -63,7 +64,8 @@ class QuizView(LoginRequiredMixin, DetailView):#ListView):
         quiz_id = int(kwargs['pk'])
     
         return render(request, 'quizzes/result.html', {
-            'answers': user.quiz_answers(quiz_id)
+            'answers': user.quiz_answers(quiz_id),
+            'quiz': Quiz.objects.filter(pk=quiz_id).first(),
         }) #context
 
     # def get_context_data(self, **kwargs: Any) -> dict[str, Any]:

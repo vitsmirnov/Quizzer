@@ -1,14 +1,51 @@
 {% extends 'base.html' %}
 
-{% block title %}Tester{% endblock %}
+{% block title %}Quiz result{% endblock %}
 
 {% block content %}
     <h1>Quiz result:</h1>
     
-    <br>
     
+    {% for question in quiz.questions.all %}
+            <!-- <div> -->
+            <fieldset disabled>
+                <legend><strong>{{ forloop.counter }}) {{ question.text }}</strong></legend>
 
-    <hr>
+                {% for answer in question.answers.all %}
+                
+                    <div>
+                        <input
+                            {% if answer in answers %}
+                                checked="checked"
+                            {% endif %}
+                            type="radio"
+                            id="question{{ forloop.counter }}"
+                            name="{{ question.id }}"
+                            value="{{ answer.id }}">
+                        <label
+                            {% if answer in answers and not answer.is_right %}
+                                style="background-color: red;"
+                            {% endif %}
+
+                            {% if answer.is_right %}
+                                style="background-color: greenyellow;"
+                            {% endif %}
+                            for="question{{ forloop.counter }}"
+                        >
+                            {{ answer.text }}
+                        </label>
+                    </div>
+
+                {% empty %}
+                    There are no choises..
+                {% endfor %}
+            </fieldset>
+        {% empty %}
+            There are no questions yet..
+        {% endfor %}
+
+
+    <br><hr>
     <h2>Answers:</h2>
     {% for answer in answers %}
         <div>
