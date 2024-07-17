@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 
 from .forms import CreationForm
-from .views import RegisterView, ProfileView, profile2, ColorListView, \
+from .views import RegisterView, ProfileView, auth_user_profile, ColorListView, \
     change_color, UserListView, buy_color
 
 
@@ -18,7 +18,7 @@ urlpatterns = [
 
     path('', UserListView.as_view(), name='user_list'),  # 'users/' or 'list/' ??
 
-    path('profile/', profile2, name='profile2'),
+    path('profile/', auth_user_profile, name='profile2'),
     path('profile/<int:pk>', ProfileView.as_view(), name='profile'),
     # path('profile/<str:username>', ProfileView.as_view(), name='profile'),
 

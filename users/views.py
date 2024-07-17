@@ -3,12 +3,19 @@ from django.views.generic import CreateView, DetailView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy, reverse
+from django.http import HttpRequest, HttpResponse
 
 from .forms import CreationForm
 from .models import Color
 
 
-USER = get_user_model()
+# USER = get_user_model()
+
+
+class UserListView(ListView):
+    model = get_user_model()  # USER
+    template_name = 'users/user_list.html'
+
 
 class RegisterView(CreateView):
     form_class = CreationForm
@@ -17,33 +24,30 @@ class RegisterView(CreateView):
 
 
 class ProfileView(LoginRequiredMixin, DetailView):
+    login_url = 'users:login'
     model = get_user_model()
     template_name = 'users/profile.html'
 
 
 class ColorListView(LoginRequiredMixin, ListView):
+    login_url = 'users:login'
     model = Color
     template_name = 'users/colors.html'
 
 
-class UserListView(ListView):
-    model = USER
-    template_name = 'users/user_list.html'
-
-
-def profile2(request):
+def auth_user_profile(request: HttpRequest) -> HttpResponse:
     return redirect('users:profile', pk=request.user.id)
 
 
 # This is not good!
-def change_color(request):
+def change_color(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         request.user.color = request.user.colors.get(pk=request.POST['choice'])
         request.user.save()
     return redirect('users:profile2')
 
 
-def buy_color(request):
+def buy_color(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST' and request.user.is_authenticated:
         print(request.POST)
         color_id = int(request.POST['color_id'])

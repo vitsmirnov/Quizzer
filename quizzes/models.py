@@ -47,7 +47,7 @@ class Answer(models.Model):
     
 
 class CorrectAnswer(models.Model):
-    """ Right answers for each question """
+    """ Correct answers for each question """
     question = models.OneToOneField(to=Question, on_delete=models.CASCADE,
                                     related_name='correct_answer')
     answer = models.ForeignKey(to=Answer, on_delete=models.CASCADE)

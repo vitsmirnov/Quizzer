@@ -6,23 +6,17 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Quiz, Question, Answer
 
-# Create your views here.
-
-def index(request):
-    return render(request, 'quizzes/index.html')
-
 
 class QuizListView(ListView):
     model = Quiz
     template_name = 'quizzes/quiz_list.html'
 
 
-class QuizView(LoginRequiredMixin, DetailView):#ListView):
-    model = Quiz  #Question
-    template_name = 'quizzes/quiz.html'
-    # context_object_name = 'questions'
-
+class QuizView(LoginRequiredMixin, DetailView):
     login_url = 'users:login'
+    model = Quiz
+    template_name = 'quizzes/quiz.html'
+    # context_object_name = 'quiz'
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         # return super().get(request, *args, **kwargs)
@@ -96,6 +90,8 @@ class QuizView(LoginRequiredMixin, DetailView):#ListView):
         # return context
 
 
+# class Submit
+
 def submit_quiz(request, quiz_id, user_id):
     if request.method == 'POST':
         print(f'submit_quiz({quiz_id}, {user_id})')
@@ -106,5 +102,3 @@ def submit_quiz(request, quiz_id, user_id):
             'quiz_id': quiz_id, 'user_id': user_id,
         })
     return redirect('users:login')
-
-# class Submit
