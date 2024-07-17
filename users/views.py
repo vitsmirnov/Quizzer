@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import CreateView, DetailView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from .forms import CreationForm
 from .models import Color
@@ -31,7 +31,7 @@ def profile2(request):
     return redirect('users:profile', pk=request.user.id)
 
 
-class ColorListView(ListView):
+class ColorListView(LoginRequiredMixin, ListView):
     model = Color
     template_name = 'users/colors.html'
 
@@ -59,3 +59,20 @@ class UserListView(ListView):
     #     context = super().get_context_data(**kwargs)
     #     # self.object_list.
     #     return context
+
+
+def buy_color(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        print(request.POST)
+        color_id = int(request.POST['color_id'])
+        color = Color.objects.filter(pk=color_id).first()
+        user = request.user
+        if user.balance >= color.price:
+            user.balance -= color.price
+            user.colors.add(color)
+            user.save()            
+            return redirect('users:profile', pk=request.user.id)
+        else:
+            return redirect('users:colors')
+    # return redirect(f'users:profile {request.user.id}')
+    return redirect('users:colors')

@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 
 from .forms import CreationForm
 from .views import RegisterView, ProfileView, profile2, ColorListView, \
-    change_color, UserListView
+    change_color, UserListView, buy_color
 
 app_name = 'users'
 
@@ -24,4 +24,6 @@ urlpatterns = [
 
     path('colors/', ColorListView.as_view(), name='colors'),
     path('change_color/', change_color, name='change_color'),
+
+    path('colors/buy/', buy_color, name='buy_color'),
 ]

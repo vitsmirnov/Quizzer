@@ -8,13 +8,24 @@
         Your balance: {{ request.user.balance }}
     </p>
     {% if object_list %}
-        <form method="post" action="">
+        <form method="post" action="{% url 'users:buy_color' %}">
             {% csrf_token %}
             <!-- <ul> -->
             {% for color in object_list %}
                 <!-- <li> -->
                 <div>
-                    <input type="submit" name="color" value="buy">
+                    <button
+                        type="submit"
+                        name="color_id"
+                        value="{{ color.id }}"
+                        
+                        {% if request.user.is_authenticated and color in request.user.colors.all %}
+                            disabled
+                        {% endif %}
+                    >
+                        buy
+                    </button>
+                        
                     Color: 
                     <span style="
                         color: {{ color.value }};
