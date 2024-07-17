@@ -34,7 +34,7 @@ class User(AbstractUser):
     passed_tests_number = models.IntegerField(default=0)
 
     colors = models.ManyToManyField(Color)
-    answers = models.ManyToManyField(Answer)
+    answers = models.ManyToManyField(Answer)  # This is probably suboptimal
     # passed_quizzees = models.ManyToManyField(Quiz)  # ?!
 
     def __str__(self) -> str:
@@ -51,6 +51,28 @@ class User(AbstractUser):
                 return True
         return False
     
+    def passed_quizzes(self) -> set[Quiz]:
+        res = set()
+        for answer in self.answers.all():
+            res.add(answer.question.quiz)
+        return res
+    
+    # temp
+    def print_passed_quizzes(self) -> None:
+        quizzes = self.passed_quizzes()
+        for quiz in quizzes:
+            print(quiz)
+            for question in quiz.questions.all():
+                print(f'\t{ question }')
+                for answer in question.answers.all():
+                    print(f'\t\t{ answer }')
+                print(f'\t\t->\t{ question.right_answer }')
+                # user's answer
+                # print(f'\t\tuser\'s->\t{ self.answers.get(question__id=question.id) }')
+                # print(f'\t\tuser\'s->\t{ get_or_none(self.answers, question__id=question.id) }')
+                # There is no any difference between filter() and get in terms of query execution speed.
+                print(f'\t\tu ->\t{ self.answers.filter(question__id=question.id).first() }')
+    
     def quiz_answers(self, quiz_id: int) -> list:
         result = list()
         # result = self.answers.get()
@@ -62,3 +84,11 @@ class User(AbstractUser):
                 result.append(answer)
         
         return result
+
+
+# temp
+def get_or_none(query_set, **kwargs):
+    try:
+        return query_set.get(**kwargs)
+    except:  # ?.DoesNotExist:
+        return None

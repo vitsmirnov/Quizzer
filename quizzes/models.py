@@ -42,6 +42,10 @@ class Answer(models.Model):
     def __str__(self) -> str:
         return f'Answer: "{self.text}" (to question: {self.question})'
     
+    @property
+    def is_right(self) -> bool:  # rename to is_correct ?
+        return self.id == self.question.right_answer.id
+    
 
 class RightAnswer(models.Model):  # CorrectAnswer
     """ Right answers for each question """
@@ -59,7 +63,8 @@ class RightAnswer(models.Model):  # CorrectAnswer
         )
     
     def __str__(self) -> str:
-        return f'For question "{self.question}" right answer is "{self.answer}"'
+        # return f'For question "{self.question}" right answer is "{self.answer}"'
+        return f'Right answer: "{self.answer}"'
 
 
 
