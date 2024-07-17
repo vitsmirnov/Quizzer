@@ -1,6 +1,9 @@
 from django.db import models
-from django.contrib.auth import get_user_model
-from django.conf import settings
+
+
+# from django.contrib.auth import get_user_model
+# from django.conf import settings
+# settings.AUTH_USER_MODEL
 
 
 class Quiz(models.Model):
@@ -15,14 +18,16 @@ class Question(models.Model):
     text = models.CharField(max_length=512)
     quiz = models.ForeignKey(to=Quiz, on_delete=models.CASCADE,
                              related_name='questions')
+    price = models.IntegerField(default=0)  # rename to points?
     
+    # Each question has to have the correct answer, but the
+    # implementation below doesn't work, so there is a
+    # table (class CorrectAnswer) below
     # correct_answer = models.ForeignKey(to='Answer', on_delete=models.CASCADE,
-    #                                  related_name='questions2')
-    # correct_answer = models.OneToOneField(to='Answer', on_delete=models.CASCADE,
-    #                                     related_name='right_for_question')
-    # correct_answer = models.IntegerField()
-
-    price = models.IntegerField(default=0)
+    #                                  related_name='correct_for_questions')
+    # An alternative way is to store an id of the correct answer,
+    # but I don't think that this is a good idea
+    # correct_answer_id = models.IntegerField()
 
     def __str__(self) -> str:
         return f'Question: "{self.text}" (quiz: {self.quiz.title})'
@@ -45,14 +50,13 @@ class CorrectAnswer(models.Model):
     """ Right answers for each question """
     question = models.OneToOneField(to=Question, on_delete=models.CASCADE,
                                     related_name='correct_answer')
-    answer = models.ForeignKey(to=Answer, on_delete=models.CASCADE)#,
-                               #related_name='questions')  # remove related_name?
+    answer = models.ForeignKey(to=Answer, on_delete=models.CASCADE)
     
     class Meta:
         constraints = (
             models.UniqueConstraint(
                 fields=('question', 'answer'),
-                name='correct_answers'  # ?
+                name='unique_correct_answers'
             ),
         )
     

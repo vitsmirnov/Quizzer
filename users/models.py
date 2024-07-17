@@ -5,8 +5,8 @@ from quizzes.models import Quiz, Answer
 
 
 # from django.conf import settings
+# from django.contrib.auth import get_user_modelf
 # settings.AUTH_USER_MODEL
-# get_user_model()
 
 
 class Color(models.Model):
