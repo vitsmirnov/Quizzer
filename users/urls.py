@@ -5,10 +5,10 @@ from .forms import CreationForm
 from .views import RegisterView, ProfileView, profile2, ColorListView, \
     change_color, UserListView, buy_color
 
+
 app_name = 'users'
 
 urlpatterns = [
-    # path('auth/login/', LoginView.as_view(template_name='users/login.html'), name='login'),
     path('login/', LoginView.as_view(template_name='users/login.html',
         next_page='users:profile2'), name='login'), #redirect_field_name # go to profile!
     path('logout/', LogoutView.as_view(template_name='users/logout.html',
@@ -23,7 +23,6 @@ urlpatterns = [
     # path('profile/<str:username>', ProfileView.as_view(), name='profile'),
 
     path('colors/', ColorListView.as_view(), name='colors'),
-    path('change_color/', change_color, name='change_color'),
-
-    path('colors/buy/', buy_color, name='buy_color'),
+    path('change_color/', change_color, name='change_color'),  # ?
+    path('colors/buy/', buy_color, name='buy_color'),  # ?
 ]

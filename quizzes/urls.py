@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import index, QuizListView, QuizView, submit_quiz
 
+
 app_name = 'quizzes'
 
 urlpatterns = [

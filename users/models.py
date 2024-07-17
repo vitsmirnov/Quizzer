@@ -3,23 +3,15 @@ from django.contrib.auth.models import AbstractUser
 
 from quizzes.models import Quiz, Answer
 
-# from colorfield.fields import ColorField
-
 
 # from django.conf import settings
 # settings.AUTH_USER_MODEL
 # get_user_model()
 
-# Create your models here.
-
-# class User: ...
-# class Color: ...
-
 
 class Color(models.Model):
     name = models.CharField(verbose_name='Color name', default='', unique=True,
                             max_length=32)
-    # value = models.IntegerField(default=0, unique=True) # str?
     value = models.CharField(default='rgba(255,255,255,1)', max_length=64)  # unique=?
     price = models.IntegerField(default=0)
 
