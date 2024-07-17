@@ -24,7 +24,7 @@ a:hover {
 h1, h2, h3, h4, h5 , h6 { font-family: 'Muli', sans-serif; font-weight:normal; }
 
 h1 {
-    border-bottom:1px solid #bbb;
+    /* border-bottom:1px solid #bbb; */
     padding:0 0 10px 0;
     margin:10px 0 20px 0;
 }
@@ -82,6 +82,8 @@ ol {
 #header .user {
     float:right;
     padding-top:4px;
+    /* position: relative; */
+    /* position-anchor: ; */
 }
 
 #content {
@@ -100,7 +102,7 @@ form p {
 
 label {
     float:left;
-    clear:both;
+    /* clear:both; */
     color:#333;
     margin-bottom:4px;
 }
