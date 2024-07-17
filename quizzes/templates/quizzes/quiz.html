@@ -15,7 +15,9 @@
         {% for question in object.questions.all %}
             <!-- <div> -->
             <fieldset>
-                <legend><strong>{{ forloop.counter }}) {{ question.text }}</strong></legend>
+                <legend><strong>
+                    {{ forloop.counter }}) {{ question.text }} (price: {{ question.price }})
+                </strong></legend>
 
                 {% for answer in question.answers.all %}
                 

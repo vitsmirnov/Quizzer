@@ -57,8 +57,13 @@ class QuizView(LoginRequiredMixin, DetailView):#ListView):
         # print(request.POST)
         answers = request.POST.copy()
         answers.pop('csrfmiddlewaretoken')  # It's doubtful
-        for k, v in answers.items():
-            user.answers.add(Answer.objects.get(pk=int(v)))
+        # for k, v in answers.items():
+        for v in answers.values():
+            answer = Answer.objects.get(pk=int(v))
+            user.answers.add(answer)
+            if answer.is_right:
+                user.balance += answer.question.price
+
         user.save()
         
         quiz_id = int(kwargs['pk'])
@@ -95,7 +100,7 @@ def submit_quiz(request, quiz_id, user_id):
     if request.method == 'POST':
         print(f'submit_quiz({quiz_id}, {user_id})')
 
-        print(request.POST)
+        # print(request.POST)
 
         return render(request, 'quizzes/passed_quiz.html', {
             'quiz_id': quiz_id, 'user_id': user_id,

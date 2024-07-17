@@ -41,11 +41,11 @@ class User(AbstractUser):
         return super().__str__() + f" balance: {self.balance}"
     
     def is_quiz_passed(self, quiz_id: int, quiz: Quiz=None) -> bool:  # quiz_id: int
-        print(quiz)
-        print(self.answers.all())
+        # print(quiz)
+        # print(self.answers.all())
         # return self.answers.get()
         for answer in self.answers.all():
-            print(answer.question.quiz == quiz)
+            # print(answer.question.quiz == quiz)
             # if answer.question.quiz == quiz:
             if answer.question.quiz.id == quiz_id:
                 return True
