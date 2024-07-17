@@ -3,12 +3,6 @@ from django.contrib.auth import get_user_model
 from django.conf import settings
 
 
-# Models list:
-# class Quiz(models.Model): ...
-# class Question(models.Model): ...
-# class Answer(models.Model): ...
-
-
 class Quiz(models.Model):
     title = models.CharField(max_length=128)
     description = models.CharField(max_length=512)
@@ -22,16 +16,16 @@ class Question(models.Model):
     quiz = models.ForeignKey(to=Quiz, on_delete=models.CASCADE,
                              related_name='questions')
     
-    # right_answer = models.ForeignKey(to='Answer', on_delete=models.CASCADE,
+    # correct_answer = models.ForeignKey(to='Answer', on_delete=models.CASCADE,
     #                                  related_name='questions2')
-    # right_answer = models.OneToOneField(to='Answer', on_delete=models.CASCADE,
+    # correct_answer = models.OneToOneField(to='Answer', on_delete=models.CASCADE,
     #                                     related_name='right_for_question')
-    # right_answer = models.IntegerField()
+    # correct_answer = models.IntegerField()
 
     price = models.IntegerField(default=0)
 
     def __str__(self) -> str:
-        return f'Question: "{self.text}" (test: {self.quiz})'
+        return f'Question: "{self.text}" (quiz: {self.quiz.title})'
 
 
 class Answer(models.Model):
@@ -40,18 +34,17 @@ class Answer(models.Model):
                                  related_name='answers')
     
     def __str__(self) -> str:
-        return f'Answer: "{self.text}" (to question: {self.question})'
+        return f'Answer: "{self.text}" (question: {self.question})'
     
     @property
-    def is_right(self) -> bool:  # rename to is_correct ?
-        # print(f'Answer.is_right: {self.id} <-> {self.question.right_answer.answer.id}')
-        return self.id == self.question.right_answer.answer.id
+    def is_correct(self) -> bool:
+        return self.id == self.question.correct_answer.answer.id
     
 
-class RightAnswer(models.Model):  # CorrectAnswer
+class CorrectAnswer(models.Model):
     """ Right answers for each question """
     question = models.OneToOneField(to=Question, on_delete=models.CASCADE,
-                                    related_name='right_answer')
+                                    related_name='correct_answer')
     answer = models.ForeignKey(to=Answer, on_delete=models.CASCADE)#,
                                #related_name='questions')  # remove related_name?
     
@@ -59,31 +52,9 @@ class RightAnswer(models.Model):  # CorrectAnswer
         constraints = (
             models.UniqueConstraint(
                 fields=('question', 'answer'),
-                name='right_answers'  # ?
+                name='correct_answers'  # ?
             ),
         )
     
     def __str__(self) -> str:
-        # return f'For question "{self.question}" right answer is "{self.answer}"'
-        return f'Right answer: "{self.answer}"'
-
-
-
-# class UserAnswer(models.Model):  # ManyToMany in User
-#     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
-#                              related_name='answers') # OneToOneField()
-#     answer = models.ForeignKey(to=Answer, on_delete=models.CASCADE,
-#                                related_name='users') # delete related_name?
-    
-    # quiz = models.ForeignKey(to=Quiz, on_delete=models.CASCADE)
-
-    # class Meta:
-    #     constraints = (
-    #         models.UniqueConstraint(
-    #             fields=('question', 'answer'),
-    #             name='right_answers'
-    #         ),
-    #     )
-    
-    # def __str__(self) -> str:
-    #     return f'For question "{self.question}" right answer is "{self.answer}"'
+        return f'Correct answer: "{self.answer}"'

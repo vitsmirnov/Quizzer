@@ -23,11 +23,11 @@
                             name="{{ question.id }}"
                             value="{{ answer.id }}">
                         <label
-                            {% if answer in answers and not answer.is_right %}
+                            {% if answer in answers and not answer.is_correct %}
                                 style="background-color: red;"
                             {% endif %}
 
-                            {% if answer.is_right %}
+                            {% if answer.is_correct %}
                                 style="background-color: greenyellow;"
                             {% endif %}
                             for="question{{ forloop.counter }}"

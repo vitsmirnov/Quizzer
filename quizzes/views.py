@@ -61,7 +61,7 @@ class QuizView(LoginRequiredMixin, DetailView):#ListView):
         for v in answers.values():
             answer = Answer.objects.get(pk=int(v))
             user.answers.add(answer)
-            if answer.is_right:
+            if answer.is_correct:
                 user.balance += answer.question.price
 
         user.save()
