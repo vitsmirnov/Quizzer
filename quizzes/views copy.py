@@ -18,37 +18,29 @@ class QuizView(LoginRequiredMixin, DetailView):
     template_name = 'quizzes/quiz.html'
     # context_object_name = 'quiz'
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        # context['is_passed'] = 
-        print(kwargs)
-        print(self.request.user)
+    # def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+    #     context = super().get_context_data(**kwargs)
+    #     #
+    #     return context
 
-        is_passed = self.request.user.is_quiz_passed(self.object.id)
-        context['is_passed'] = is_passed
-        if is_passed:
-            context['answers'] = self.request.user.quiz_answers(self.object.id)
-        print(context)
-        return context
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        # return super().get(request, *args, **kwargs)
+        rensponse = super().get(request, *args, **kwargs)
+        print('QuizView.get()')
 
-    # def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-    #     # return super().get(request, *args, **kwargs)
-    #     # response = super().get(request, *args, **kwargs)
-    #     print('QuizView.get()')
+        user = request.user
+        quiz_id = int(kwargs['pk'])
+        # print(user)
+        # print(user.answers.all())
+        # print(f'pk = {kwargs['pk']}')
+        # user.is_quiz_passed(self.model.objects.get(pk=int(kwargs['pk'])))
+        if user.is_quiz_passed(quiz_id):
+            return render(request, 'quizzes/result.html', {
+                'answers': user.quiz_answers(quiz_id),
+                'quiz': Quiz.objects.filter(pk=quiz_id).first(),
+            })
 
-    #     user = request.user
-    #     quiz_id = self.get_object().id #int(kwargs['pk'])
-    #     # print(user)
-    #     # print(user.answers.all())
-    #     # print(f'pk = {kwargs['pk']}')
-    #     # user.is_quiz_passed(self.model.objects.get(pk=int(kwargs['pk'])))
-    #     if user.is_quiz_passed(quiz_id):
-    #         return render(request, 'quizzes/result.html', {
-    #             'answers': user.quiz_answers(quiz_id),
-    #             # 'quiz': self.get_object(), #Quiz.objects.filter(pk=quiz_id).first(),
-    #         })
-
-    #     return super().get(request, *args, **kwargs) #response
+        return rensponse
     
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         # return super().get(request, *args, **kwargs)
@@ -74,8 +66,6 @@ class QuizView(LoginRequiredMixin, DetailView):
         user.save()
         
         quiz_id = int(kwargs['pk'])
-
-        return self.get(request, *args, **kwargs)
     
         return render(request, 'quizzes/result.html', {
             'answers': user.quiz_answers(quiz_id),
