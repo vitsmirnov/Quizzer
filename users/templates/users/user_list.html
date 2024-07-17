@@ -9,11 +9,9 @@
     </p>
     {% if object_list %}
         {% for user in object_list %}
-            <ul>
-                <li>
-                    User: {{ user.username }} ({{ user.color.name }}), balance: {{ user.balance }}
-                </li>
-            </ul>
+            <div style="border-style: solid; border-color: {{ user.color.value }};">
+                User: {{ user.username }}, passed quizzes: {{ user.passed_quizzes|length }}
+            </div>
         {% endfor %}
     {% else %}
         There are no users yet.
