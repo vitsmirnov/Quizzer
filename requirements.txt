@@ -2,4 +2,10 @@
 
 Django==4.*
 
-# Pillow
+
+# Django will install them automatically:
+#asgiref  3.8.1
+#Django   4.2.14
+#pip      24.1.2
+#sqlparse 0.5.1
+#tzdata   2024.1
