@@ -50,15 +50,17 @@ class User(AbstractUser):
         #         return res
 
         # It's probably not optimal
-        for answer in self.answers.all():
-            if answer.question.quiz.id == quiz_id and answer.is_correct:
-                res += answer.question.points
+        # for answer in self.answers.all():
+        #     if answer.question.quiz.id == quiz_id and answer.is_correct:
+        #         res += answer.question.points
 
         # This is the same as code above
-        # answers = self.answers.filter(question__quiz__id=quiz_id)#, is_correct=True) # question__correct_answer__answer__id=        
-        # for answer in answers:
-        #     if answer.is_correct:
-        #         res += answer.question.points
+        answers = self.answers.filter(question__quiz__id=quiz_id,
+            correctanswer__answer_id=models.F('id'))
+        # correctanswer__answer_id=models.F('id') is the same as: 
+        # question__correct_answer__answer__id=models.F('id')
+        for answer in answers:
+            res += answer.question.points
 
         return res
     

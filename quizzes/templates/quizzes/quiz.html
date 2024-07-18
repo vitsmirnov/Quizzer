@@ -5,7 +5,15 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Quiz "{{ object.title }}" {% if is_passed %}(result){% endif %}</h1>
+    <!-- <h1>Quiz "{ object.title }" { if is_passed }(result){ endif }</h1> -->
+    <h1>
+        {% if is_passed %}
+            Your results of quiz "{{ object.title }}"
+        {% else %}
+            Quiz "{{ object.title }}"
+        {% endif %}
+    </h1>
+    
     <p>{{ object.description }}</p>
     <p>Total points: {{ object.points }}</p>
 
