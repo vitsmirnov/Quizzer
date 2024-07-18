@@ -14,8 +14,8 @@
         {% endif %}
     </h1>
     
-    <p>{{ object.description }}</p>
-    <p>Total points: {{ object.points }}</p>
+    <p><i>Description:</i> {{ object.description }}</p>
+    <p><i>Total points:</i> {{ object.points }}</p>
 
     {% if not is_passed %}
         <form action="{% url 'quizzes:quiz' object.pk %}" method="post">
@@ -40,14 +40,19 @@
                         value="{{ answer.id }}">
                     <label
                         {% if is_passed and answer in answers and not answer.is_correct %}
-                            style="background-color: red;"
+                            style="background-color: rgb(238, 89, 89);"
                         {% endif %}
                         {% if is_passed and answer.is_correct %}
-                            style="background-color: greenyellow;"
+                            style="background-color: rgb(195, 255, 106);"
                         {% endif %}
                         for="question{{ answer.id }}"
                     >
                         {{ answer.text }}
+                        {% if is_passed and answer in answers %}
+                            (your choise is
+                            {% if not answer.is_correct %}not{% endif %}
+                            correct)
+                        {% endif %}
                     </label>
                     <!-- { endwith } -->
                 {% empty %}

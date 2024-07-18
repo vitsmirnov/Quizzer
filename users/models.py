@@ -39,29 +39,17 @@ class User(AbstractUser):
         return False
     
     def score_for_quiz(self, quiz_id: int) -> int:
-        if not self.is_quiz_passed(quiz_id):
-            return 0
-        res = 0
-
-        # passed_quizzes = self.passed_quizzes()
-        # for quiz in passed_quizzes:
-        #     if quiz.id == quiz_id:
-        #         pass
-        #         return res
-
-        # It's probably not optimal
-        # for answer in self.answers.all():
-        #     if answer.question.quiz.id == quiz_id and answer.is_correct:
-        #         res += answer.question.points
-
-        # This is the same as code above
+        # this is probably redundant
+        # if not self.is_quiz_passed(quiz_id):
+        #     return 0
+        
         answers = self.answers.filter(question__quiz__id=quiz_id,
-            correctanswer__answer_id=models.F('id'))
+            correctanswer__answer_id=models.F('id'))  # the answer is correct
         # correctanswer__answer_id=models.F('id') is the same as: 
         # question__correct_answer__answer__id=models.F('id')
+        res = 0
         for answer in answers:
             res += answer.question.points
-
         return res
     
     def passed_quizzes(self) -> set[Quiz]:
