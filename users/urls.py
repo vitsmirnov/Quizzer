@@ -19,6 +19,7 @@ urlpatterns = [
     path('', UserListView.as_view(), name='user_list'),  # 'users/' or 'list/' ??
 
     path('profile/', auth_user_profile, name='profile2'),
+    # Profile doesn't need a pk, because it's login required (shows only for themselves). Or not?
     path('profile/<int:pk>', ProfileView.as_view(), name='profile'),
     # path('profile/<str:username>', ProfileView.as_view(), name='profile'),
 

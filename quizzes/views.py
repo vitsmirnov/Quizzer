@@ -11,6 +11,7 @@ from .models import Quiz, Question, Answer
 class QuizListView(ListView):
     model = Quiz
     template_name = 'quizzes/quiz_list.html'
+    # paginate_by = # to do!
 
 
 class QuizView(LoginRequiredMixin, DetailView):
@@ -58,26 +59,24 @@ class QuizView(LoginRequiredMixin, DetailView):
     #     return super().get(request, *args, **kwargs) #response
     
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        # return super().get(request, *args, **kwargs)
-        # rensponse = super().post(request, *args, **kwargs)
-
         user = request.user
         print('QuizView.post()')
         # print('REQUEST.POST:', request.POST)
         # print('KWARGS', kwargs)
         # print('ARGS:', args)
-        answers = request.POST.copy()
+        answers = request.POST.copy()  # Do we need to copy? Probably no.
         answers.pop('csrfmiddlewaretoken')  # It's doubtful
-        # for answer_id in answers.values():
-        #     answer = Answer.objects.get(pk=int(answer_id))
-        #     user.answers.add(answer)
-        #     if answer.is_correct:
-        #         user.balance += answer.question.points
+        for answer_id in answers.values():
+            answer = Answer.objects.get(pk=int(answer_id))
+            user.answers.add(answer)
+            if answer.is_correct:
+                user.balance += answer.question.points
 
-        # user.save()
+        user.save()
         
-        # quiz_id = kwargs['pk']
+        # quiz_id = kwargs['pk']  # self.get_object().id  # pk
 
+        # Is it the same as redirect() ??
+        # return self.get(request, *args, **kwargs)  # redirect?
         # return HttpResponseRedirect(reverse('quizzes:quiz', args=(kwargs['pk'],)))
         return redirect('quizzes:quiz', **kwargs)
-        # return self.get(request, *args, **kwargs)  # redirect?
