@@ -1,8 +1,9 @@
 from typing import Any
 from django.shortcuts import render, redirect
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 
 from .models import Quiz, Question, Answer
 
@@ -20,9 +21,9 @@ class QuizView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        # context['is_passed'] = 
-        print(kwargs)
-        print(self.request.user)
+        # print('CONTEXT:', context)
+        # print('KWARGS:', kwargs)
+        # print('USER:', self.request.user)
 
         user = self.request.user
         is_passed = user.is_quiz_passed(self.object.id)
@@ -30,8 +31,12 @@ class QuizView(LoginRequiredMixin, DetailView):
         if is_passed:
             context['answers'] = user.quiz_answers(self.object.id)
             context['score'] = user.score_for_quiz(self.object.id)
-        print(context)
+        # print('CONTEXT2:', context)
         return context
+    
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        print('QuizView.get()')
+        return super().get(request, *args, **kwargs)
 
     # def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
     #     # return super().get(request, *args, **kwargs)
@@ -58,64 +63,21 @@ class QuizView(LoginRequiredMixin, DetailView):
 
         user = request.user
         print('QuizView.post()')
-        # print(f'submit_quiz({quiz_id}, {user_id})')
-        # print(request.POST)
-        # return render(request, 'quizzes/passed_quiz.html', {
-        #     'quiz_id': quiz_id, 'user_id': user_id,
-        # })
-        # print(request.POST)
+        # print('REQUEST.POST:', request.POST)
+        # print('KWARGS', kwargs)
+        # print('ARGS:', args)
         answers = request.POST.copy()
         answers.pop('csrfmiddlewaretoken')  # It's doubtful
-        # for k, v in answers.items():
-        for v in answers.values():
-            answer = Answer.objects.get(pk=int(v))
-            user.answers.add(answer)
-            if answer.is_correct:
-                user.balance += answer.question.points
+        # for answer_id in answers.values():
+        #     answer = Answer.objects.get(pk=int(answer_id))
+        #     user.answers.add(answer)
+        #     if answer.is_correct:
+        #         user.balance += answer.question.points
 
-        user.save()
+        # user.save()
         
-        quiz_id = int(kwargs['pk'])
+        # quiz_id = kwargs['pk']
 
-        return self.get(request, *args, **kwargs)
-    
-        return render(request, 'quizzes/result.html', {
-            'answers': user.quiz_answers(quiz_id),
-            'quiz': Quiz.objects.filter(pk=quiz_id).first(),
-        }) #context
-
-    # def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        # return super().get_context_data(**kwargs)
-        # quizzes = super().get_context_data(**kwargs)
-        # for v in kwargs:
-        #     print(v)
-        # q = kwargs['object']
-        # print(kwargs['object'])
-        # print(quizzes)
-        # print(type(q).__dict__)# .objects.all())
-
-        # print(self.object.questions.all())
-        # for o in self.object.questions.all():
-        #     print(o)
-
-        # return self.object.questions.all() #quizzes
-        
-        # context = super().get_context_data(**kwargs)
-        # context['questions'] = self.object.questions.all()
-        # context['answers'] = None
-
-        # return context
-
-
-# class Submit
-
-def submit_quiz(request, quiz_id, user_id):
-    if request.method == 'POST':
-        print(f'submit_quiz({quiz_id}, {user_id})')
-
-        # print(request.POST)
-
-        return render(request, 'quizzes/passed_quiz.html', {
-            'quiz_id': quiz_id, 'user_id': user_id,
-        })
-    return redirect('users:login')
+        # return HttpResponseRedirect(reverse('quizzes:quiz', args=(kwargs['pk'],)))
+        return redirect('quizzes:quiz', **kwargs)
+        # return self.get(request, *args, **kwargs)  # redirect?

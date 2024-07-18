@@ -15,6 +15,8 @@ from .models import Color
 class UserListView(ListView):
     model = get_user_model()  # USER
     template_name = 'users/user_list.html'
+    # paginate_by = 3
+    # ordering = ['balance', 'username']
 
 
 class RegisterView(CreateView):

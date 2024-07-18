@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import QuizListView, QuizView, submit_quiz
+from .views import QuizListView, QuizView
 
 
 app_name = 'quizzes'
