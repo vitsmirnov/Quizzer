@@ -103,16 +103,3 @@ Statistics (Log)
 
 
 
---------------------
-
-
-<input
-                        type="submit"
-                        name="color"
-                        value="buy"
-                        text=" <--> "
-                        
-                        {% if request.user.is_authenticated and color in request.user.colors.all %}
-                            disabled
-                        {% endif %}
-                    >

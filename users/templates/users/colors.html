@@ -16,6 +16,7 @@
                 <div>
                     <button
                         type="submit"
+                        class="submit-button2"
                         name="color_id"
                         value="{{ color.id }}"
                         
@@ -47,5 +48,5 @@
         There are no colors yet.
     {% endif %}
     
-    <a href="{% url 'users:profile' request.user.pk  %}">Go to profile</a>
+    <!-- <a href="{ url 'users:profile' request.user.pk  }">Go to profile</a> -->
 {% endblock %}
