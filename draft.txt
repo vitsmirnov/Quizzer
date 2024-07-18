@@ -12,8 +12,8 @@ User
   answers (ManyToMany)
   // passed_quizzes (ManyToMany) ?
   --?
-  passed_test_number
-  statistics
+  //passed_test_number
+  //statistics
 
 
 Color
@@ -70,7 +70,7 @@ RightAnswers // QuestionAnswer?
   answer (fk Answer)
 
 
-UserAnswers
+UserAnswers // statistics
   User
   Answer
   //Question ?
@@ -92,9 +92,11 @@ Statistics (Log)
   main
   login
   logout
-  register
+  register/signup
   profile
-  test
+  test/quiz
+  colors
+  ..
  
 
 [urls]

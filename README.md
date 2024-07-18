@@ -87,7 +87,7 @@ Watching for file changes with StatReloader
 Performing system checks...
 
 System check identified no issues (0 silenced).
-July 18, 2024 - 14:23:55
+January 1, 2000 - 23:59:59
 Django version 4.2.14, using settings 'core.settings'
 Starting development server at http://127.0.0.1:8000/
 Quit the server with CTRL-BREAK.
