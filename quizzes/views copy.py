@@ -61,7 +61,7 @@ class QuizView(LoginRequiredMixin, DetailView):
             answer = Answer.objects.get(pk=int(v))
             user.answers.add(answer)
             if answer.is_correct:
-                user.balance += answer.question.price
+                user.balance += answer.question.points
 
         user.save()
         

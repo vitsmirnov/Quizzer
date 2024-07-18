@@ -54,6 +54,7 @@ ol {
     color:#f3f7cc;
     font-size:20px;
     margin-right:10%;
+    /* margin: 5px; */
 }
 
 #header ul.menu {
@@ -82,6 +83,8 @@ ol {
 #header .user {
     float:right;
     padding-top:4px;
+    margin: 5px;
+    /* padding: 5px; */
     /* position: relative; */
     /* position-anchor: ; */
 }
@@ -115,6 +118,7 @@ input, textarea {
     padding:6px 10px;
     font-size:14px;
 }
+.submit-button,
 input[type=submit], a.button {
     font-weight:bold;
     /* background:#12c064; */
@@ -123,6 +127,8 @@ input[type=submit], a.button {
     padding:10px 20px;
     font-size:14px;
     text-transform:uppercase;
+
+    border-width: 0px; /* for button */
 }
 .errorlist {
     color:#cc0033;

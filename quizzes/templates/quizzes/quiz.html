@@ -6,52 +6,59 @@
 
 {% block content %}
     <h1>Quiz "{{ object.title }}" {% if is_passed %}(result){% endif %}</h1>
+    <p>{{ object.description }}</p>
+    <p>Total points: {{ object.points }}</p>
 
-    
-    {% if request.user.is_authenticated %}
-        <!-- <form action="{ url 'quizzes:submit_quiz' object.pk request.user.pk }" method="post"> -->
+    {% if not is_passed %}
         <form action="{% url 'quizzes:quiz' object.pk %}" method="post">
         {% csrf_token %}
     {% endif %}
-        
+
         {% for question in object.questions.all %}
-            <!-- <div> -->
-            <fieldset>
+            <fieldset {% if is_passed %}disabled{% endif %}>
                 <legend><strong>
-                    {{ forloop.counter }}) {{ question.text }} (points: {{ question.price }})
+                    {{ forloop.counter }}) "{{ question.text }}" (points: {{ question.points }})
                 </strong></legend>
 
                 {% for answer in question.answers.all %}
-                
-                    <div>
-                    <!-- <p> -->
-                        <input 
-                            type="radio"
-                            id="question{{ forloop.counter }}"
-                            name="{{ question.id }}"
-                            value="{{ answer.id }}">
-                        <label for="question{{ forloop.counter }}">{{ answer.text }}</label>
-                    <!-- </p> -->
-                    </div>
-                    <!-- <br> -->
-
+                    <!-- { with is_passed and answer in answers as is_user_answer } -->
+                    <input
+                        {% if is_passed and answer in answers %}
+                            checked="checked"
+                        {% endif %}
+                        type="radio"
+                        id="question{{ answer.id }}"
+                        name="{{ question.id }}"
+                        value="{{ answer.id }}">
+                    <label
+                        {% if is_passed and answer in answers and not answer.is_correct %}
+                            style="background-color: red;"
+                        {% endif %}
+                        {% if is_passed and answer.is_correct %}
+                            style="background-color: greenyellow;"
+                        {% endif %}
+                        for="question{{ answer.id }}"
+                    >
+                        {{ answer.text }}
+                    </label>
+                    <!-- { endwith } -->
                 {% empty %}
                     There are no choises..
                 {% endfor %}
             </fieldset>
-            <!-- </div> -->
-            <!-- <hr> -->
         {% empty %}
             There are no questions yet..
         {% endfor %}
 
 
-    {% if request.user.is_authenticated %}
-        <!-- <button>Submit</button> -->
-        <input type="submit" value="Submit">
+    {% if not is_passed %}
+        <!-- <input type="submit" value="Submit"> -->
+        <button type="submit" class="submit-button">Submit</button>
         </form>
+    {% else %}
+        <div><h2>
+            Your score: {{ score }}
+        </h2></div>
     {% endif %}
 
 {% endblock %}
-
-    

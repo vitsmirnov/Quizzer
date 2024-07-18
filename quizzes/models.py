@@ -12,13 +12,20 @@ class Quiz(models.Model):
 
     def __str__(self) -> str:
         return f'Quiz: "{self.title}"'
+    
+    @property
+    def points(self) -> int:
+        res = 0
+        for question in self.questions.all():
+            res += question.points
+        return res
 
 
 class Question(models.Model):
     text = models.CharField(max_length=512)
     quiz = models.ForeignKey(to=Quiz, on_delete=models.CASCADE,
                              related_name='questions')
-    price = models.IntegerField(default=0)  # rename to points?
+    points = models.IntegerField(default=0)  # Amount of points for correct answer
     
     # Each question has to have the correct answer, but the
     # implementation below doesn't work, so there is a

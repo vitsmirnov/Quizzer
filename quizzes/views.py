@@ -24,10 +24,12 @@ class QuizView(LoginRequiredMixin, DetailView):
         print(kwargs)
         print(self.request.user)
 
-        is_passed = self.request.user.is_quiz_passed(self.object.id)
+        user = self.request.user
+        is_passed = user.is_quiz_passed(self.object.id)
         context['is_passed'] = is_passed
         if is_passed:
-            context['answers'] = self.request.user.quiz_answers(self.object.id)
+            context['answers'] = user.quiz_answers(self.object.id)
+            context['score'] = user.score_for_quiz(self.object.id)
         print(context)
         return context
 
@@ -69,7 +71,7 @@ class QuizView(LoginRequiredMixin, DetailView):
             answer = Answer.objects.get(pk=int(v))
             user.answers.add(answer)
             if answer.is_correct:
-                user.balance += answer.question.price
+                user.balance += answer.question.points
 
         user.save()
         
