@@ -20,7 +20,8 @@ urlpatterns = [
     # Or it could use a username insted of pk
     path('profile/<int:pk>', ProfileView.as_view(), name='profile'),
     path('profile/', profile_redirect, name='profile_redirect'),
-    path('', UserListView.as_view(), name='user_list'),  # 'users/' or 'list/' ??
+    path('', UserListView.as_view(), name='user_list'),
 
+    # This probably shouldn't be here (in users)
     path('colors/', ColorListView.as_view(), name='colors'),
 ]

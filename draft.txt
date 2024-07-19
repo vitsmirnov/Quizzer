@@ -106,6 +106,8 @@ Stat2
 [urls]
   // users/account
   // quizzes
+  quiz/<int:pk>/submit/
+  quiz/<int:pk>/result/
 
 
 

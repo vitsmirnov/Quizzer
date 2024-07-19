@@ -78,7 +78,7 @@ class ColorListView(LoginRequiredMixin, ListView):  # Should it be a FormView?
                 'message': 'No money, no honey',
                 'object_list': self.get_queryset(),  # This is probably not good!
             })
-            # This dosen't work..
+            # This won't work..
             # return self.render_to_response({
             #     'message': 'Not enough money',
             #     'object_list': self.get_queryset(),

@@ -22,7 +22,6 @@ from django.shortcuts import redirect
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
-    # path('quizzes/', include('quizzes.urls', namespace='quizzes')),
-    path('', include('quizzes.urls')),#, name='main'),#quizzes/
-    # path('', redirect('main')),
+    path('quizzes/', include('quizzes.urls')),
+    path('', lambda request: redirect('quizzes:quiz_list')),  # Is it ok?
 ]
