@@ -19,7 +19,6 @@
 
         <p>
             {% if object.colors.all %}
-                <!-- <form action="{ url 'users:change_color' }" method="post"> -->
                 <form action="{% url 'users:profile' request.user.id %}" method="post">
                     {% csrf_token %}
                     Color: 

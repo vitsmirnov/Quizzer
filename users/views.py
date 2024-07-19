@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import CreateView, DetailView, ListView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
 from django.http import HttpRequest, HttpResponse
 
@@ -28,7 +29,7 @@ class ProfileView(LoginRequiredMixin, DetailView):
     template_name = 'users/profile.html'
 
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        # Add validation!
+        # Validation needed!
         request.user.color = request.user.colors.get(pk=request.POST['choice'])
         request.user.save()
         return redirect('users:profile', pk=request.user.id)
@@ -122,15 +123,6 @@ class ColorListView(LoginRequiredMixin, ListView):
 
 
 
-# temp!
-def auth_user_profile(request: HttpRequest) -> HttpResponse:
+@login_required(login_url='users:login')
+def profile_redirect(request: HttpRequest) -> HttpResponse:
     return redirect('users:profile', pk=request.user.id)
-
-
-# This is not good!
-# This should be in ProfileView (probably)
-def change_color(request: HttpRequest) -> HttpResponse:
-    if request.method == 'POST':
-        request.user.color = request.user.colors.get(pk=request.POST['choice'])
-        request.user.save()
-    return redirect('users:profile2')
