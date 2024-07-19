@@ -3,17 +3,23 @@
 {% block title %}Users{% endblock %}
 
 {% block content %}
-    <h1>User</h1>
+    <h1>Users</h1>
     <p>
         Number of users: {{ object_list|length }}
     </p>
     {% if object_list %}
         {% for user in object_list %}
-            <div style="border-style: solid; border-color: {{ user.color.value }};">
-                User: {{ user.username }}, 
+            <p>
+                <strong style="
+                    border-style: solid;
+                    border-width: 2px;
+                    border-color: {{ user.color.value }};"
+                >
+                    {{ user.username }}
+                </strong>
                 passed quizzes: {{ user.passed_quizzes|length }}, 
                 total points: {{ user.total_points }}
-            </div>
+            </p>
         {% endfor %}
     {% else %}
         There are no users yet.

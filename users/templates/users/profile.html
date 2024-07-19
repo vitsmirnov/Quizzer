@@ -3,13 +3,14 @@
 {% block title %}{{ request.user.username }} profile{% endblock %}
 
 {% block content %}
-    <h1>Hello, {{ request.user.username }}</h1>
+    <h1>Welcome, {{ request.user.username }}</h1>
     
     <p>
         <!-- <a href=""> -->
             Passed tests: {{ request.user.passed_quizzes|length }}
         <!-- </a> -->
     </p>
+    <p>Points: {{ request.user.total_points }}</p>
     <p>Balance: {{ request.user.balance }}</p>
 
     <!-- <form method="post"> -->

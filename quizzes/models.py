@@ -15,10 +15,9 @@ class Quiz(models.Model):
     
     @property
     def points(self) -> int:
-        res = 0
-        for question in self.questions.all():
-            res += question.points
-        return res
+        return self.questions.aggregate(
+            models.Sum('points')
+        )['points__sum'] or 0
     
     @property
     def number_of_questions(self) -> int:
