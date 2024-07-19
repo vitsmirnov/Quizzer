@@ -1,4 +1,6 @@
+from collections.abc import Sequence
 from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, DetailView, ListView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -24,6 +26,43 @@ class UserListView(ListView):
     template_name = 'users/user_list.html'
     # paginate_by =  # to do!
     # ordering = ['balance', 'username']
+
+    def get_ordering(self) -> Sequence[str]:
+        ordering = super().get_ordering()
+        print('UserListView.get_ordering():', ordering, '\n')
+        return ordering
+    
+    def get_queryset(self) -> QuerySet[Any]:
+        # return super().get_queryset() #.order_by()
+
+        queryset = super().get_queryset()
+        print('UserListView.get_queryset():', queryset, '\n')
+        # It's ok if list of users isn't very big
+        # print(type(queryset))
+        queryset = sorted(queryset, key=lambda user: user.total_points, #passed_quizzes_count,
+                          reverse=True)
+        # queryset = QuerySet(queryset)
+        # print(type(queryset))
+        return queryset
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        return super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+        # ordering here
+        # print('UserListView.get_context_data:', context)
+        # # print('object_list:', context['object_list'])#self.object_list)
+        # ol = context['object_list']
+        # ol = ol.order_by('balance')
+        # context['object_list'] = ol
+        # # print('object_list2:', context['object_list'])#self.object_list)
+        # print('UserListView.get_context_data:', context)
+        # print()
+        context['sorted_by_points'] = sorted(
+            self.get_queryset(),
+            key=lambda user: user.total_points, #passed_quizzes_count,
+            reverse=True
+        )
+        return context
 
 
 class ProfileView(LoginRequiredMixin, DetailView):

@@ -85,6 +85,9 @@ Statistics (Log)
   date ?
 
 
+Stat2
+  ordering by points
+  
 
 
 

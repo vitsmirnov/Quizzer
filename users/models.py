@@ -24,7 +24,7 @@ class User(AbstractUser):
     color = models.ForeignKey(to=Color, on_delete=models.CASCADE,
         related_name='users', null=True, blank=True)  # default= ?
     
-    colors = models.ManyToManyField(Color)
+    colors = models.ManyToManyField(Color)  # Need to add default (fabrik?)
     # User's answers for quiz questions (statistics)
     answers = models.ManyToManyField(Answer)
     # Working with answers like that is probably not optimal
@@ -33,16 +33,23 @@ class User(AbstractUser):
     # but maybe not..
 
     def is_quiz_passed(self, quiz_id: int) -> bool:
-        for answer in self.answers.all():
-            if answer.question.quiz.id == quiz_id:
-                return True
-        return False
+        return self.answers.filter(question__quiz__id=quiz_id).count() > 0
+        # for answer in self.answers.all():
+        #     if answer.question.quiz.id == quiz_id:
+        #         return True
+        # return False
     
     def score_for_quiz(self, quiz_id: int) -> int:
         # this is probably redundant
         # if not self.is_quiz_passed(quiz_id):
         #     return 0
         
+        # Check this!!!
+        return self.answers.filter(question__quiz__id=quiz_id,
+            correctanswer__answer_id=models.F('id')).aggregate(  # the answer is correct
+                models.Sum('question__points')
+            )['question__points__sum'] or 0
+
         answers = self.answers.filter(question__quiz__id=quiz_id,
             correctanswer__answer_id=models.F('id'))  # the answer is correct
         # correctanswer__answer_id=models.F('id') is the same as: 
@@ -53,17 +60,29 @@ class User(AbstractUser):
         return res
     
     def passed_quizzes(self) -> set[Quiz]:
+        return {answer.question.quiz for answer in self.answers.all()}
+
         result = set()
         for answer in self.answers.all():
             result.add(answer.question.quiz)
         return result
     
     @property
+    def total_points(self) -> int:  # total_score? rating?
+        # return self.answers.all()
+        return self.answers.filter(
+            correctanswer__answer_id=models.F('id')).aggregate(  # the answer is correct
+                models.Sum('question__points')
+            )['question__points__sum'] or 0
+    
+    @property
     def passed_quizzes_count(self) -> int:
+        # This should be a query to DB!
         return len(self.passed_quizzes())
     
     def quiz_answers(self, quiz_id: int) -> list[Answer]:
         """ It returns the answers for particular quiz """
+        # This should be a query to DB!
         result = list()
         for answer in self.answers.all():
             if answer.question.quiz.id == quiz_id:

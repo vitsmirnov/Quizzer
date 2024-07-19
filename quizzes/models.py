@@ -57,7 +57,7 @@ class CorrectAnswer(models.Model):
     """ Correct answers for each question """
     question = models.OneToOneField(to=Question, on_delete=models.CASCADE,
                                     related_name='correct_answer')
-    answer = models.ForeignKey(to=Answer, on_delete=models.CASCADE)
+    answer = models.ForeignKey(to=Answer, on_delete=models.CASCADE)  # set related_name!
     
     class Meta:
         constraints = (
