@@ -4,11 +4,6 @@ from django.contrib.auth.models import AbstractUser
 from quizzes.models import Quiz, Answer
 
 
-# from django.conf import settings
-# from django.contrib.auth import get_user_modelf
-# settings.AUTH_USER_MODEL
-
-
 class Color(models.Model):
     name = models.CharField(verbose_name='Color name', default='', unique=True,
                             max_length=32)
@@ -36,8 +31,7 @@ class User(AbstractUser):
         return self.answers.filter(question__quiz__id=quiz_id).count() > 0
     
     def score_for_quiz(self, quiz_id: int) -> int:
-        # Check this!!!
-        return self.answers.filter(
+        return self.answers.filter(  # Check needed
             question__quiz__id=quiz_id,
             correctanswer__answer_id=models.F('id')  # the answer is correct
         ).aggregate(
@@ -67,7 +61,7 @@ class User(AbstractUser):
         """ It returns the user's answers for particular quiz (id) """
         return [answer for answer in self.answers.filter(question__quiz__id=quiz_id)]
     
-    # temp (for degugging)
+    # temp (for debugging)
     def _print_passed_quizzes(self) -> None:
         quizzes = self.passed_quizzes()
         for quiz in quizzes:

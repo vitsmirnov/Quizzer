@@ -4,7 +4,6 @@
 <html>
 <head>
     <title>{% block title %}{% endblock %}</title>
-    <!-- <link href="{% static "css/base.css" %}" rel="stylesheet"> -->
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
 </head>
 <body>
@@ -12,8 +11,8 @@
         <span class="logo"><a href="{% url 'quizzes:quiz_list' %}">Quizzer</a></span>
 
         {% if request.user.is_authenticated %}
+            <!-- The order of these components should be changed! -->
             <span class="user"><a href="{% url 'users:logout' %}"> Logout </a></span>
-            <!-- <span class="user"> | </span> -->
             <span class="user"><a
                 href="{% url 'users:profile' request.user.id %}"                
                 style="
@@ -26,11 +25,8 @@
             </a></span>
         {% else %}
             <span class="user"><a href="{% url 'users:login' %}"> Login </a></span>
-            <!-- <span class="user"> | </span> -->
             <span class="user"><a href="{% url 'users:register' %}"> Register </a></span>
-            <!-- <span>guest</span> -->
         {% endif %}
-        <!-- <span>Tests</span> -->
         <span class="user"><a href="{% url 'users:user_list' %}"> Users </a></span>
     </div>
 

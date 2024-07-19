@@ -6,16 +6,13 @@
     <h1>Welcome, {{ request.user.username }}</h1>
     
     <p>
-        <!-- <a href=""> -->
+        <!-- <a href="{ url 'users:passed_quizzes' }"> -->
             Passed quizzes: {{ request.user.passed_quizzes_count }}
         <!-- </a> -->
     </p>
+
     <p>Points: {{ request.user.total_points }}</p>
     <p>Balance: {{ request.user.balance }}</p>
-
-    <!-- <form method="post"> -->
-
-        <!-- <p>Color: <a href="#">{{ request.user.color }}</a></p> -->
 
         <p>
             {% if object.colors.all %}
@@ -34,7 +31,7 @@
                             </option>
                         {% endfor %}
                     </select>
-                    <!-- <input type="submit" value="Change color"> -->
+                    <!-- <button type="submit" class="submit-button2">apply</button> -->
                 </form>
             {% else %}
                 Color: 
@@ -45,14 +42,9 @@
             
         </p>
 
-        
-        <!-- <input type="submit" value="Отправить" /> -->
-
-    <!-- </form> -->
 
     <p><a href="{% url 'users:colors' %}">Buy colors</a></p>
     <!-- <p><a href="">Change password</a></p> -->
-    <!-- <p><a href="{ url 'users:passed_quizzes' }">Passed quzzes</a></p> -->
     <p><a href="{% url 'users:logout' %}">Logout</a></p>
 
 {% endblock %}

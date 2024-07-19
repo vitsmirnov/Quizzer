@@ -31,9 +31,6 @@ class QuizView(LoginRequiredMixin, DetailView):
 
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         user = request.user
-        # print('REQUEST.POST:', request.POST)
-        # print('KWARGS', kwargs)
-        # print('ARGS:', args)
         answers = request.POST.copy()
         answers.pop('csrfmiddlewaretoken')  # It's doubtful
         for answer_id in answers.values():
