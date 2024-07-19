@@ -13,7 +13,7 @@ from .forms import CreationForm
 from .models import Color
 
 
-# USER = get_user_model()
+USER = get_user_model()
 
 
 class RegisterView(CreateView):
@@ -22,8 +22,20 @@ class RegisterView(CreateView):
     success_url = reverse_lazy('users:login')
 
 
+class ProfileView(LoginRequiredMixin, DetailView):
+    login_url = 'users:login'
+    model = USER
+    template_name = 'users/profile.html'
+
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        # Add validation!
+        request.user.color = request.user.colors.get(pk=request.POST['choice'])
+        request.user.save()
+        return redirect('users:profile', pk=request.user.id)
+
+
 class UserListView(ListView):
-    model = get_user_model()  # USER
+    model = USER
     template_name = 'users/user_list.html'
     # paginate_by =  # to do!
     # ordering = ['balance', 'username']
@@ -81,71 +93,32 @@ class UserListView(ListView):
         return context
 
 
-class ProfileView(LoginRequiredMixin, DetailView):
-    login_url = 'users:login'
-    model = get_user_model()
-    template_name = 'users/profile.html'
 
-
-# This should be FormView?
+# Should it be a FormView?
 class ColorListView(LoginRequiredMixin, ListView):
     login_url = 'users:login'
     model = Color
     template_name = 'users/colors.html'
     # paginate_by = # to do!
-    # message = None
-
-    # def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-    #     return super().get(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        # context = {**super().get_context_data(**kwargs), **kwargs}
-        context = super().get_context_data(**kwargs)
-        # print('get_context_data', self.message)
-        # context['message'] = self.message
-        return context
     
-    def render_to_response(self, context: dict[str, Any], **response_kwargs: Any) -> HttpResponse:
-        self.object_list = self.get_queryset()
-        return super().render_to_response(context, **response_kwargs)
-
-    # buy color should be here
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        # return super().get(request, *args, **kwargs)
-
-        # return self.get(request, *args, **kwargs)
-        # return redirect(self)
-        
-        # print(request.POST)
-        color_id = int(request.POST['color_id'])
-        color = Color.objects.get(pk=color_id)
+        color = Color.objects.get(pk=int(request.POST['color_id']))
         user = request.user
         if user.balance >= color.price:
             user.balance -= color.price
             user.colors.add(color)
             user.save()
-            # self.message = None
-            return redirect('users:colors')#, pk=request.user.id)
+            return redirect('users:colors')
         else:
-            # self.message = 'Not enough money'
-            # return render
-            # return redirect('users:colors')#, pk=request.user.id)
-        
-            # self.get_queryset
-            return self.render_to_response({
-                'message': 'Not enough money',
-                'object_list': self.get_queryset(),
-            }, **kwargs)
-            # context = self.get_context_data()
-            # print(self.get_queryset())
-            # context['message'] = 'Not enough money'
             return render(request, self.template_name, {
                 'message': 'No money, no honey',
-                # self.get_context_object_name(): self.get_queryset(),
-                'object_list': self.get_queryset(),
+                'object_list': self.get_queryset(),  # This is not good!
             })
-        # return redirect('users:profile', pk=request.user.id)
-        return redirect('users:colors')
+            # This dosen't work..
+            # return self.render_to_response({
+            #     'message': 'Not enough money',
+            #     'object_list': self.get_queryset(),
+            # }, **kwargs)
 
 
 
@@ -161,21 +134,3 @@ def change_color(request: HttpRequest) -> HttpResponse:
         request.user.color = request.user.colors.get(pk=request.POST['choice'])
         request.user.save()
     return redirect('users:profile2')
-
-
-# This should be in ColorListView (post)
-def buy_color(request: HttpRequest) -> HttpResponse:
-    if request.method == 'POST' and request.user.is_authenticated:
-        print(request.POST)
-        color_id = int(request.POST['color_id'])
-        color = Color.objects.filter(pk=color_id).first()
-        user = request.user
-        if user.balance >= color.price:
-            user.balance -= color.price
-            user.colors.add(color)
-            user.save()            
-            return redirect('users:profile', pk=request.user.id)
-        else:
-            return redirect('users:colors')
-    # return redirect('users:profile', pk=request.user.id)
-    return redirect('users:colors')
