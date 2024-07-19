@@ -1,7 +1,9 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 
-from .views import RegisterView, ProfileView, ColorListView, UserListView
+from .views import (
+    RegisterView, ProfileView, ColorListView, UserListView, profile_redirect
+)
 
 
 app_name = 'users'
@@ -17,6 +19,7 @@ urlpatterns = [
     # Profile doesn't need a pk, because it's login required (shows only for themselves). Or not?
     # Or it could use a username insted of pk
     path('profile/<int:pk>', ProfileView.as_view(), name='profile'),
+    path('profile/', profile_redirect, name='profile_redirect'),
     path('', UserListView.as_view(), name='user_list'),  # 'users/' or 'list/' ??
 
     path('colors/', ColorListView.as_view(), name='colors'),
