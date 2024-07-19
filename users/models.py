@@ -17,16 +17,24 @@ class Color(models.Model):
 class User(AbstractUser):
     balance = models.IntegerField(default=0)
     color = models.ForeignKey(to=Color, on_delete=models.CASCADE,
-        related_name='users', null=True, blank=True)  # default= ?
+        related_name='users')  # default= ?
     
     colors = models.ManyToManyField(Color)  # Need to add default (fabrik?)
     # User's answers for quiz questions (statistics)
-    answers = models.ManyToManyField(Answer)
+    answers = models.ManyToManyField(Answer, blank=True)
     # Working with answers like that is probably not optimal
     # and we should create a table for statistics or something like that:
     # passed_quizzees = models.ManyToManyField(Quiz)  # ?!
     # but maybe not..
 
+    @property
+    def total_points(self) -> int:  # total_score? rating?
+        return self.answers.filter(
+            correctanswer__answer_id=models.F('id')  # the answer is correct
+        ).aggregate(
+            models.Sum('question__points')
+        )['question__points__sum'] or 0  # get('question__points__sum', 0)
+    
     def is_quiz_passed(self, quiz_id: int) -> bool:
         return self.answers.filter(question__quiz__id=quiz_id).count() > 0
     
@@ -43,13 +51,8 @@ class User(AbstractUser):
     def passed_quizzes(self) -> set[Quiz]:
         return {answer.question.quiz for answer in self.answers.all()}
     
-    @property
-    def total_points(self) -> int:  # total_score? rating?
-        return self.answers.filter(
-            correctanswer__answer_id=models.F('id')  # the answer is correct
-        ).aggregate(
-            models.Sum('question__points')
-        )['question__points__sum'] or 0  # get('question__points__sum', 0)
+    def passed_quiz_ids(self) -> set[Quiz]:
+        return {answer.question.quiz.id for answer in self.answers.all()}
     
     @property
     def passed_quizzes_count(self) -> int:

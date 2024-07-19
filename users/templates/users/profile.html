@@ -6,9 +6,9 @@
     <h1>Welcome, {{ request.user.username }}</h1>
     
     <p>
-        <!-- <a href="{ url 'users:passed_quizzes' }"> -->
+        <a href="{% url 'quizzes:user_result' %}">
             Passed quizzes: {{ request.user.passed_quizzes_count }}
-        <!-- </a> -->
+        </a>
     </p>
 
     <p>Points: {{ request.user.total_points }}</p>

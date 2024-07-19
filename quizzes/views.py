@@ -1,4 +1,5 @@
 from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, View
@@ -43,3 +44,13 @@ class QuizView(LoginRequiredMixin, DetailView):
         
         return redirect('quizzes:quiz', **kwargs)
         # return self.get(request, *args, **kwargs)  # Is it the same as redirect() ?
+
+
+class UserQuizzesView(LoginRequiredMixin, ListView):
+    login_url = 'users:login'
+    model = Quiz
+    template_name = 'quizzes/quiz_list.html'
+
+    def get_queryset(self) -> QuerySet[Any]:
+        return super().get_queryset().filter(
+            pk__in=self.request.user.passed_quiz_ids())
