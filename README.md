@@ -115,6 +115,6 @@ Quit the server with CTRL-BREAK.
 
 Приятного использования!
 
-*Виталий Смирнов, 2024*
-*https://github.com/vitsmirnov*
-*mrmaybelately@gmail.com*
+*Виталий Смирнов, 2024*  
+*https://github.com/vitsmirnov*  
+*mrmaybelately@gmail.com*  
