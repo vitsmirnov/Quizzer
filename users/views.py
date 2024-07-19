@@ -106,6 +106,7 @@ class ColorListView(LoginRequiredMixin, ListView):
         return context
     
     def render_to_response(self, context: dict[str, Any], **response_kwargs: Any) -> HttpResponse:
+        self.object_list = self.get_queryset()
         return super().render_to_response(context, **response_kwargs)
 
     # buy color should be here
@@ -131,10 +132,10 @@ class ColorListView(LoginRequiredMixin, ListView):
             # return redirect('users:colors')#, pk=request.user.id)
         
             # self.get_queryset
-            # return self.render_to_response({
-            #     'message': 'Not enough money',
-            #     'object_list': self.get_queryset(),
-            # })
+            return self.render_to_response({
+                'message': 'Not enough money',
+                'object_list': self.get_queryset(),
+            }, **kwargs)
             # context = self.get_context_data()
             # print(self.get_queryset())
             # context['message'] = 'Not enough money'
