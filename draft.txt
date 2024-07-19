@@ -111,3 +111,8 @@ Stat2
 
 
 
+
+# from django.contrib.auth import get_user_model
+# from django.conf import settings
+# settings.AUTH_USER_MODEL
+

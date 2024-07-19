@@ -1,11 +1,6 @@
 from django.db import models
 
 
-# from django.contrib.auth import get_user_model
-# from django.conf import settings
-# settings.AUTH_USER_MODEL
-
-
 class Quiz(models.Model):
     title = models.CharField(max_length=128)
     description = models.CharField(max_length=512)
@@ -34,7 +29,7 @@ class Question(models.Model):
     # implementation below doesn't work, so there is a
     # table (class CorrectAnswer) below
     # correct_answer = models.ForeignKey(to='Answer', on_delete=models.CASCADE,
-    #                                  related_name='correct_for_questions')
+    #                                    related_name='correct_for_questions')
     # An alternative way is to store an id of the correct answer,
     # but I don't think that this is a good idea
     # correct_answer_id = models.IntegerField()

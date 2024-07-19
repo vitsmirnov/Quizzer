@@ -1,7 +1,8 @@
 from collections.abc import Sequence
 from typing import Any
+from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
-from django.db.models import Case, IntegerField, Value, When, Exists, F
+from django.db.models import Case, IntegerField, Value, When, Exists, F  # Going to use it
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, DetailView, ListView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
