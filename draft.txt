@@ -116,3 +116,4 @@ Stat2
 # from django.conf import settings
 # settings.AUTH_USER_MODEL
 
+# return HttpResponseRedirect(reverse('quizzes:quiz', args=(kwargs['pk'],)))
