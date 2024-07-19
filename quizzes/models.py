@@ -19,6 +19,10 @@ class Quiz(models.Model):
         for question in self.questions.all():
             res += question.points
         return res
+    
+    @property
+    def number_of_questions(self) -> int:
+        return self.questions.count()
 
 
 class Question(models.Model):

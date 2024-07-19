@@ -1,6 +1,7 @@
 from collections.abc import Sequence
 from typing import Any
 from django.db.models.query import QuerySet
+from django.db.models import Case, IntegerField, Value, When, Exists
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, DetailView, ListView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -34,6 +35,20 @@ class UserListView(ListView):
     
     def get_queryset(self) -> QuerySet[Any]:
         # return super().get_queryset() #.order_by()
+
+        # user.total_points
+        # self.answers.filter(
+        #     correctanswer__answer_id=models.F('id')  # the answer is correct
+        # ).aggregate(
+        #     models.Sum('question__points')
+        # )['question__points__sum'] or 0
+
+        # return super().get_queryset().order_by(
+        #     Case(
+        #         *[When(pk=pk, then=Value(i)) for i, pk in enumerate(my_ids)],
+        #         output_field=IntegerField()
+        #     ).asc()
+        # )
 
         queryset = super().get_queryset()
         print('UserListView.get_queryset():', queryset, '\n')

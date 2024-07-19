@@ -9,12 +9,16 @@
     <hr>
     {% for quiz in object_list %}
         <div>
-            <a href="{% url 'quizzes:quiz' quiz.pk %}">{{ quiz.title }}</a>
+            <a href="{% url 'quizzes:quiz' quiz.pk %}">
+                <strong>{{ quiz.title }}</strong> 
+                (points: {{ quiz.points }}, questions: {{ quiz.number_of_questions }})
+            </a>
 
             {% if request.user.is_authenticated %}
                 {% is_quiz_passed_by_user quiz.id request.user as is_passed %}
                 {% if is_passed %}
-                    <strong>(passed)</strong>
+                    {% user_score_for_quiz request.user quiz.id as user_score %}
+                    <strong>(passed, your score: {{ user_score }})</strong>
                 {% endif %}
             {% endif %}
 

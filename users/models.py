@@ -46,9 +46,10 @@ class User(AbstractUser):
         
         # Check this!!!
         return self.answers.filter(question__quiz__id=quiz_id,
-            correctanswer__answer_id=models.F('id')).aggregate(  # the answer is correct
-                models.Sum('question__points')
-            )['question__points__sum'] or 0
+            correctanswer__answer_id=models.F('id')  # the answer is correct
+        ).aggregate(
+            models.Sum('question__points')
+        )['question__points__sum'] or 0
 
         answers = self.answers.filter(question__quiz__id=quiz_id,
             correctanswer__answer_id=models.F('id'))  # the answer is correct
@@ -71,9 +72,10 @@ class User(AbstractUser):
     def total_points(self) -> int:  # total_score? rating?
         # return self.answers.all()
         return self.answers.filter(
-            correctanswer__answer_id=models.F('id')).aggregate(  # the answer is correct
-                models.Sum('question__points')
-            )['question__points__sum'] or 0
+            correctanswer__answer_id=models.F('id')  # the answer is correct
+        ).aggregate(
+            models.Sum('question__points')
+        )['question__points__sum'] or 0
     
     @property
     def passed_quizzes_count(self) -> int:
