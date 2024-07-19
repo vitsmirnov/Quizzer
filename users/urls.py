@@ -25,5 +25,5 @@ urlpatterns = [
 
     path('colors/', ColorListView.as_view(), name='colors'),
     path('change_color/', change_color, name='change_color'),  # ?
-    path('colors/buy/', buy_color, name='buy_color'),  # ?
+    # path('colors/buy/', buy_color, name='buy_color'),  # ?
 ]

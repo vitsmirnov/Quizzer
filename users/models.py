@@ -34,62 +34,38 @@ class User(AbstractUser):
 
     def is_quiz_passed(self, quiz_id: int) -> bool:
         return self.answers.filter(question__quiz__id=quiz_id).count() > 0
-        # for answer in self.answers.all():
-        #     if answer.question.quiz.id == quiz_id:
-        #         return True
-        # return False
     
     def score_for_quiz(self, quiz_id: int) -> int:
-        # this is probably redundant
-        # if not self.is_quiz_passed(quiz_id):
-        #     return 0
-        
         # Check this!!!
-        return self.answers.filter(question__quiz__id=quiz_id,
+        return self.answers.filter(
+            question__quiz__id=quiz_id,
             correctanswer__answer_id=models.F('id')  # the answer is correct
         ).aggregate(
             models.Sum('question__points')
-        )['question__points__sum'] or 0
-
-        answers = self.answers.filter(question__quiz__id=quiz_id,
-            correctanswer__answer_id=models.F('id'))  # the answer is correct
+        )['question__points__sum'] or 0  # get('question__points__sum', 0)
         # correctanswer__answer_id=models.F('id') is the same as: 
         # question__correct_answer__answer__id=models.F('id')
-        res = 0
-        for answer in answers:
-            res += answer.question.points
-        return res
     
     def passed_quizzes(self) -> set[Quiz]:
         return {answer.question.quiz for answer in self.answers.all()}
-
-        result = set()
-        for answer in self.answers.all():
-            result.add(answer.question.quiz)
-        return result
     
     @property
     def total_points(self) -> int:  # total_score? rating?
-        # return self.answers.all()
         return self.answers.filter(
             correctanswer__answer_id=models.F('id')  # the answer is correct
         ).aggregate(
             models.Sum('question__points')
-        )['question__points__sum'] or 0
+        )['question__points__sum'] or 0  # get('question__points__sum', 0)
     
     @property
     def passed_quizzes_count(self) -> int:
+        # return self.answers.distinct('question__quiz__id')  # It won't work in SQLite
         # This should be a query to DB!
         return len(self.passed_quizzes())
     
     def quiz_answers(self, quiz_id: int) -> list[Answer]:
-        """ It returns the answers for particular quiz """
-        # This should be a query to DB!
-        result = list()
-        for answer in self.answers.all():
-            if answer.question.quiz.id == quiz_id:
-                result.append(answer)
-        return result
+        """ It returns the user's answers for particular quiz (id) """
+        return [answer for answer in self.answers.filter(question__quiz__id=quiz_id)]
     
     # temp (for degugging)
     def _print_passed_quizzes(self) -> None:

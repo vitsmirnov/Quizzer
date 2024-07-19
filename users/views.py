@@ -1,7 +1,7 @@
 from collections.abc import Sequence
 from typing import Any
 from django.db.models.query import QuerySet
-from django.db.models import Case, IntegerField, Value, When, Exists
+from django.db.models import Case, IntegerField, Value, When, Exists, F
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, DetailView, ListView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -37,7 +37,7 @@ class UserListView(ListView):
         # return super().get_queryset() #.order_by()
 
         # user.total_points
-        # self.answers.filter(
+        # user.answers.filter(
         #     correctanswer__answer_id=models.F('id')  # the answer is correct
         # ).aggregate(
         #     models.Sum('question__points')
@@ -54,6 +54,7 @@ class UserListView(ListView):
         print('UserListView.get_queryset():', queryset, '\n')
         # It's ok if list of users isn't very big
         # print(type(queryset))
+        # This is not a QuerySet anymore!
         queryset = sorted(queryset, key=lambda user: user.total_points, #passed_quizzes_count,
                           reverse=True)
         # queryset = QuerySet(queryset)
@@ -92,10 +93,58 @@ class ColorListView(LoginRequiredMixin, ListView):
     model = Color
     template_name = 'users/colors.html'
     # paginate_by = # to do!
+    # message = None
+
+    # def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+    #     return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        # context = {**super().get_context_data(**kwargs), **kwargs}
+        context = super().get_context_data(**kwargs)
+        # print('get_context_data', self.message)
+        # context['message'] = self.message
+        return context
+    
+    def render_to_response(self, context: dict[str, Any], **response_kwargs: Any) -> HttpResponse:
+        return super().render_to_response(context, **response_kwargs)
 
     # buy color should be here
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        return super().get(request, *args, **kwargs)
+        # return super().get(request, *args, **kwargs)
+
+        # return self.get(request, *args, **kwargs)
+        # return redirect(self)
+        
+        # print(request.POST)
+        color_id = int(request.POST['color_id'])
+        color = Color.objects.get(pk=color_id)
+        user = request.user
+        if user.balance >= color.price:
+            user.balance -= color.price
+            user.colors.add(color)
+            user.save()
+            # self.message = None
+            return redirect('users:colors')#, pk=request.user.id)
+        else:
+            # self.message = 'Not enough money'
+            # return render
+            # return redirect('users:colors')#, pk=request.user.id)
+        
+            # self.get_queryset
+            # return self.render_to_response({
+            #     'message': 'Not enough money',
+            #     'object_list': self.get_queryset(),
+            # })
+            # context = self.get_context_data()
+            # print(self.get_queryset())
+            # context['message'] = 'Not enough money'
+            return render(request, self.template_name, {
+                'message': 'No money, no honey',
+                # self.get_context_object_name(): self.get_queryset(),
+                'object_list': self.get_queryset(),
+            })
+        # return redirect('users:profile', pk=request.user.id)
+        return redirect('users:colors')
 
 
 
