@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from quizzes.models import Quiz, Answer
 
 
+# This shouldn't be here (in app users)!
 class Color(models.Model):
     name = models.CharField(verbose_name='Color name', default='', unique=True,
                             max_length=32)
