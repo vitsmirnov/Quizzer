@@ -2,17 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 from quizzes.models import Quiz, Answer
-
-
-# This shouldn't be here (in app users)!
-class Color(models.Model):
-    name = models.CharField(verbose_name='Color name', default='', unique=True,
-                            max_length=32)
-    value = models.CharField(default='rgba(255,255,255,1)', max_length=64)  # unique=?
-    price = models.IntegerField(default=0)
-
-    def __str__(self) -> str:
-        return f"Color: {self.name} ({self.value}), price: {self.price}"
+from shop.models import Color
 
 
 class User(AbstractUser):

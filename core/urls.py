@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('quizzes/', include('quizzes.urls')),
+    path('shop/', include('shop.urls')),
     path('', lambda request: redirect('quizzes:quiz_list')),  # Is it ok?
 ]
