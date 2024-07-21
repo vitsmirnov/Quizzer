@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 
 from .views import (
-    RegisterView, ProfileView, ColorListView, UserListView, profile_redirect
+    RegisterView, ProfileView, UserListView, profile_redirect
 )
 
 
@@ -21,7 +21,4 @@ urlpatterns = [
     path('profile/<int:pk>', ProfileView.as_view(), name='profile'),
     path('profile/', profile_redirect, name='profile_redirect'),
     path('', UserListView.as_view(), name='user_list'),
-
-    # This probably shouldn't be here (in users)
-    path('colors/', ColorListView.as_view(), name='colors'),
 ]

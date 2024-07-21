@@ -2,25 +2,15 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 from quizzes.models import Quiz, Answer
-
-
-# This shouldn't be here (in app users)!
-class Color(models.Model):
-    name = models.CharField(verbose_name='Color name', default='', unique=True,
-                            max_length=32)
-    value = models.CharField(default='rgba(255,255,255,1)', max_length=64)  # unique=?
-    price = models.IntegerField(default=0)
-
-    def __str__(self) -> str:
-        return f"Color: {self.name} ({self.value}), price: {self.price}"
+# from shop.models import Color
 
 
 class User(AbstractUser):
     balance = models.IntegerField(default=0)
-    color = models.ForeignKey(to=Color, on_delete=models.CASCADE,
+    color = models.ForeignKey(to='Color', on_delete=models.CASCADE,
         related_name='users')  # default= ?
     
-    colors = models.ManyToManyField(Color)  # Need to add default (fabrik?)
+    colors = models.ManyToManyField('Color')  # Need to add default (fabrik?)
     # User's answers for quiz questions (statistics)
     answers = models.ManyToManyField(Answer, blank=True)
     # Working with answers like that is probably not optimal
