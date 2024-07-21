@@ -2,15 +2,15 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 from quizzes.models import Quiz, Answer
-# from shop.models import Color
+from shop.models import Color
 
 
 class User(AbstractUser):
     balance = models.IntegerField(default=0)
-    color = models.ForeignKey(to='Color', on_delete=models.CASCADE,
+    color = models.ForeignKey(to=Color, on_delete=models.CASCADE,
         related_name='users')  # default= ?
     
-    colors = models.ManyToManyField('Color')  # Need to add default (fabrik?)
+    colors = models.ManyToManyField(Color)  # Need to add default (fabrik?)
     # User's answers for quiz questions (statistics)
     answers = models.ManyToManyField(Answer, blank=True)
     # Working with answers like that is probably not optimal

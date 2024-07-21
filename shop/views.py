@@ -11,7 +11,7 @@ from .models import Color
 class ColorListView(LoginRequiredMixin, ListView):  # Should it be a FormView?
     login_url = 'users:login'
     model = Color
-    template_name = 'users/colors.html'
+    template_name = 'shop/colors.html'
     # paginate_by = # to do!
     
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
@@ -21,7 +21,7 @@ class ColorListView(LoginRequiredMixin, ListView):  # Should it be a FormView?
             user.balance -= color.price
             user.colors.add(color)
             user.save()
-            return redirect('users:colors')
+            return redirect('shop:colors')
         else:
             return render(request, self.template_name, {
                 'message': 'No money, no honey',
