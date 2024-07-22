@@ -4,13 +4,16 @@
             <a href="?page={{ page.previous_page_number }}">previous</a>
         {% endif %}
 
-        {% for i in page.paginator.page_range %}
-            {% if page.number == i %}
-                <span class="current">{{ page.number }}</span>
-            {% else %}
-                <a href="?page={{ i }}">{{ i }}</a>
-            {% endif %}
-        {% endfor %}
+        <!-- This isn't good. If there will be a huge amount of pages, this will be bad -->
+        {% if page.paginator.num_pages > 1 %}
+            {% for i in page.paginator.page_range %}
+                {% if page.number == i %}
+                    <span class="current">{{ page.number }}</span>
+                {% else %}
+                    <a href="?page={{ i }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
 
         {% if page.has_next %}
             <a href="?page={{ page.next_page_number }}">next</a>
