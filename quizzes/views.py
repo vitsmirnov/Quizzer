@@ -11,7 +11,7 @@ from .models import Quiz, Answer
 class QuizListView(ListView):
     model = Quiz
     template_name = 'quizzes/quiz_list.html'
-    paginate_by = 1  # This shouldn't be hardcoded I guess
+    paginate_by = 20  # This shouldn't be hardcoded I guess
 
 
 class QuizView(LoginRequiredMixin, DetailView):

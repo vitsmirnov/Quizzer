@@ -50,7 +50,7 @@
     {% endif %}
 
     <br>
-    {% include "paginator2.html" with page=page_obj %}
+    {% include "paginator.html" with page_obj=page_obj %}
     
     <br><a href="{% url 'users:profile' request.user.pk  %}">Go to profile</a>
 {% endblock %}
