@@ -25,6 +25,15 @@ class User(AbstractUser):
         ).aggregate(
             models.Sum('question__points')
         )['question__points__sum'] or 0  # get('question__points__sum', 0)
+
+        # query = self.answers.filter(
+        #     correctanswer__answer_id=models.F('id')  # the answer is correct
+        # )
+        # print(query)
+        # print(query.query)
+        # return query.aggregate(
+        #     models.Sum('question__points')
+        # )['question__points__sum'] or 0  # get('question__points__sum', 0)
     
     def is_quiz_passed(self, quiz_id: int) -> bool:
         return self.answers.filter(question__quiz__id=quiz_id).count() > 0
