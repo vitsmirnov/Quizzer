@@ -26,7 +26,7 @@ class ColorListView(LoginRequiredMixin, ListView):  # Should it be a FormView?
             # return self.render_to_response({
             #     'message': 'Not enough money',
             #     'object_list': self.get_queryset(),
-            # }, **kwargs)
+            # })#, **kwargs)
         user.balance -= color.price
         user.colors.add(color)
         user.save()

@@ -34,18 +34,16 @@ class QuizView(LoginRequiredMixin, DetailView):
         answers = request.POST.copy()
         answers.pop('csrfmiddlewaretoken')  # It's doubtful
         if len(answers) == 0:  # There are no answers
+            # Why will this not work?
             # context = self.get_context_data(**kwargs)
             # context['message'] = 'You haven\'t chosen any answer'
-            # return render(request, self.template_name, context)
-        
-            # return render(request, self.template_name, {
-            #     'message': 'You haven\'t chosen any answer',
-            #     'object': self.get_object(),  # This is doubtful
-            # })
+            # return self.render_to_response(request, self.template_name, context)
+            
+            # I'm not shure about that
             return self.render_to_response({
                 'message': 'You haven\'t chosen any answer',
                 'object': self.get_object(),  # This is doubtful
-            })#, **kwargs)
+            })
         user = request.user
         for answer_id in answers.values():
             # Validation needed!
