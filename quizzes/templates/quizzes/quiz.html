@@ -14,6 +14,10 @@
         {% endif %}
     </h1>
     
+    {% if message %}
+        <h3 class="message">{{ message }}</h3>
+    {% endif %}
+
     <p><i>Description:</i> {{ object.description }}</p>
     <p><i>Number of questions:</i> {{ object.number_of_questions }}</p>
     <p><i>Total points:</i> {{ object.points }}</p>

@@ -7,7 +7,7 @@
     <h3>Your balance: {{ request.user.balance }}</h3>
 
     {% if message %}
-        <h3 style="color:rgb(216, 58, 58)">{{ message }}</h3>
+        <h3 class="message">{{ message }}</h3>
     {% endif %}
 
     {% if object_list %}
