@@ -46,6 +46,7 @@ class UserListView(ListView):
 
     def get_queryset(self) -> QuerySet[Any]:
         queryset = super().get_queryset()
+        # queryset = queryset.annotate()
         # Change ordering here
         # print(queryset)
         # queryset.annotate(total_points=Subquery(queryset.raw('\
