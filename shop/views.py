@@ -12,7 +12,7 @@ class ColorListView(LoginRequiredMixin, ListView):  # Should it be a FormView?
     login_url = 'users:login'
     model = Color
     template_name = 'shop/colors.html'
-    paginate_by = 20  # Should it be hardcoded?
+    # paginate_by = 20  # Should it be hardcoded?
     
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         color = Color.objects.get(pk=int(request.POST['color_id']))
@@ -21,6 +21,7 @@ class ColorListView(LoginRequiredMixin, ListView):  # Should it be a FormView?
             return render(request, self.template_name, {
                 'message': 'No money, no honey',
                 'object_list': self.get_queryset(),  # This is probably not good!
+                # 'page_obj': self.get_paginator(self.get_queryset(), 20),#self.get_paginate_by()),
             })
             # This won't work..
             # return self.render_to_response({
