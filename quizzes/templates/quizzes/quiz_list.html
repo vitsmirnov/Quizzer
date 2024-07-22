@@ -7,7 +7,8 @@
 {% block content %}
     <h1>Quizzes</h1>
     <hr>
-    {% for quiz in object_list %}
+    <!-- { for quiz in object_list } -->
+    {% for quiz in page_obj %}
         <div>
             <a href="{% url 'quizzes:quiz' quiz.pk %}">
                 <strong>{{ quiz.title }}</strong> 
@@ -28,4 +29,7 @@
     {% empty %}
         There are no quizzes yet..
     {% endfor %}
+
+    {% include "paginator2.html" with page=page_obj %}
+
 {% endblock %}

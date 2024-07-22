@@ -10,10 +10,10 @@
         <h3 class="message">{{ message }}</h3>
     {% endif %}
 
-    {% if object_list %}
+    {% if page_obj %}
         <form method="post" action="{% url 'shop:colors' %}">
             {% csrf_token %}
-            {% for color in object_list %}
+            {% for color in page_obj %}
                 <div>
                     <button
                         type="submit"
@@ -48,6 +48,9 @@
     {% else %}
         There are no colors yet.
     {% endif %}
+
+    <br>
+    {% include "paginator2.html" with page=page_obj %}
     
     <br><a href="{% url 'users:profile' request.user.pk  %}">Go to profile</a>
 {% endblock %}

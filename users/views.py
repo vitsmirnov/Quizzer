@@ -39,7 +39,7 @@ class ProfileView(LoginRequiredMixin, DetailView):
 class UserListView(ListView):
     model = USER
     template_name = 'users/user_list.html'
-    # paginate_by =  # to do!
+    paginate_by = 2  # It probably shouldn't be hardcoded
     # ordering = []  # to do!
 
     def get_queryset(self) -> QuerySet[Any]:
