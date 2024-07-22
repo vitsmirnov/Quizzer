@@ -57,10 +57,12 @@ class QuizView(LoginRequiredMixin, DetailView):
         # return self.get(request, *args, **kwargs)  # Is it the same as redirect() ?
 
 
+# This should be in users app!
 class UserQuizzesView(LoginRequiredMixin, ListView):
     login_url = 'users:login'
     model = Quiz
     template_name = 'quizzes/quiz_list.html'
+    paginate_by = 20 # Hardcode is not good!
 
     def get_queryset(self) -> QuerySet[Any]:
         return super().get_queryset().filter(
