@@ -17,12 +17,7 @@ class ColorListView(LoginRequiredMixin, ListView):  # Should it be a FormView?
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         color = Color.objects.get(pk=int(request.POST['color_id']))
         user = request.user
-        if user.balance >= color.price:
-            user.balance -= color.price
-            user.colors.add(color)
-            user.save()
-            return redirect('shop:colors')
-        else:
+        if user.balance < color.price:
             return render(request, self.template_name, {
                 'message': 'No money, no honey',
                 'object_list': self.get_queryset(),  # This is probably not good!
@@ -32,3 +27,7 @@ class ColorListView(LoginRequiredMixin, ListView):  # Should it be a FormView?
             #     'message': 'Not enough money',
             #     'object_list': self.get_queryset(),
             # }, **kwargs)
+        user.balance -= color.price
+        user.colors.add(color)
+        user.save()
+        return redirect('shop:colors')

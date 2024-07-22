@@ -1,6 +1,6 @@
 from typing import Any
 from django.db.models.query import QuerySet
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -23,17 +23,30 @@ class QuizView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        is_passed = user.is_quiz_passed(self.object.id)
+        is_passed = user.is_quiz_passed(self.get_object().id)#self.object.id
         context['is_passed'] = is_passed
         if is_passed:
-            context['answers'] = user.quiz_answers(self.object.id)
-            context['score'] = user.score_for_quiz(self.object.id)
+            context['answers'] = user.quiz_answers(self.get_object().id)#self.object.id)
+            context['score'] = user.score_for_quiz(self.get_object().id)#self.object.id)
         return context
 
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        user = request.user
         answers = request.POST.copy()
         answers.pop('csrfmiddlewaretoken')  # It's doubtful
+        if len(answers) == 0:  # There are no answers
+            # context = self.get_context_data(**kwargs)
+            # context['message'] = 'You haven\'t chosen any answer'
+            # return render(request, self.template_name, context)
+        
+            # return render(request, self.template_name, {
+            #     'message': 'You haven\'t chosen any answer',
+            #     'object': self.get_object(),  # This is doubtful
+            # })
+            return self.render_to_response({
+                'message': 'You haven\'t chosen any answer',
+                'object': self.get_object(),  # This is doubtful
+            })#, **kwargs)
+        user = request.user
         for answer_id in answers.values():
             # Validation needed!
             answer = Answer.objects.get(pk=int(answer_id))
