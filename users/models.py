@@ -20,11 +20,15 @@ class User(AbstractUser):
 
     @property
     def total_points(self) -> int:  # total_score? rating?
-        return self.answers.filter(
-            correctanswer__answer_id=models.F('id')  # the answer is correct
-        ).aggregate(
-            models.Sum('question__points')
-        )['question__points__sum'] or 0  # get('question__points__sum', 0)
+        # return self.answers.filter(
+        #     correctanswer__answer_id=models.F('id')  # the answer is correct
+        # ).aggregate(
+        #     models.Sum('question__points')
+        # )['question__points__sum'] or 0  # get('question__points__sum', 0)
+    
+        return (self.answers
+            .filter(correctanswer__answer_id=models.F('id'))  # the answer is correct
+            .aggregate(sum=models.Sum('question__points'))['sum'] or 0)  # get('question__points__sum', 0)
 
         # query = self.answers.filter(
         #     correctanswer__answer_id=models.F('id')  # the answer is correct
