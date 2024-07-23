@@ -8,7 +8,7 @@
         Number of users: {{ object_list|length }}
     </p>
     {% if object_list %}
-        {% for user in object_list %}
+        {% for user in page_obj %}
             <p>
                 <strong style="
                     border-style: solid;
@@ -25,7 +25,7 @@
         There are no users yet.
     {% endif %}
 
-    <!-- { include "paginator.html" with page_obj=page_obj } -->
+    {% include "paginator.html" with page_obj=page_obj %}
     
     <br><a href="{% url 'quizzes:quiz_list' %}">Go to quizzes</a>
 {% endblock %}

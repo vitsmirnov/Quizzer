@@ -20,38 +20,21 @@ class User(AbstractUser):
 
     @property
     def total_points(self) -> int:  # total_score? rating?
-        # return self.answers.filter(
-        #     correctanswer__answer_id=models.F('id')  # the answer is correct
-        # ).aggregate(
-        #     models.Sum('question__points')
-        # )['question__points__sum'] or 0  # get('question__points__sum', 0)
-    
         return (self.answers
             .filter(correctanswer__answer_id=models.F('id'))  # the answer is correct
             .aggregate(sum=models.Sum('question__points'))['sum'] or 0)  # get('question__points__sum', 0)
 
-        # query = self.answers.filter(
-        #     correctanswer__answer_id=models.F('id')  # the answer is correct
-        # )
-        # print(query)
-        # print(query.query)
-        # return query.aggregate(
-        #     models.Sum('question__points')
-        # )['question__points__sum'] or 0  # get('question__points__sum', 0)
-    
     def is_quiz_passed(self, quiz_id: int) -> bool:
         return self.answers.filter(question__quiz__id=quiz_id).count() > 0
     
     def score_for_quiz(self, quiz_id: int) -> int:
-        return self.answers.filter(  # Check needed
-            question__quiz__id=quiz_id,
-            correctanswer__answer_id=models.F('id')  # the answer is correct
-        ).aggregate(
-            models.Sum('question__points')
-        )['question__points__sum'] or 0  # get('question__points__sum', 0)
+        return (self.answers  # Check needed
+            .filter(question__quiz__id=quiz_id,
+                    correctanswer__answer_id=models.F('id'))  # the answer is correct
+            .aggregate(models.Sum('question__points'))['question__points__sum'] or 0)
         # correctanswer__answer_id=models.F('id') is the same as: 
         # question__correct_answer__answer__id=models.F('id')
-    
+
     def passed_quizzes(self) -> set[Quiz]:
         return {answer.question.quiz for answer in self.answers.all()}
     
